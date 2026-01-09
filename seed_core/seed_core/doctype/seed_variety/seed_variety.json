@@ -89,9 +89,8 @@
         },
         {
             "fieldname": "cultivation_environment",
-            "fieldtype": "Select",
-            "label": "Cultivation Environment",
-            "options": "Greenhouse\nOpen field\nTunnel\nHitech\nNA"
+            "fieldtype": "Small Text",
+            "label": "Cultivation Environment"
         },
         {
             "fieldname": "section_break_stock",

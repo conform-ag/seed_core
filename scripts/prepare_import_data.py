@@ -7,6 +7,28 @@ def prepare_data():
     names_path = os.path.join(base_path, "references", "Commercial Names.csv")
     output_path = os.path.join(base_path, "seed_core", "fixtures", "seed_variety_import_full.csv")
 
+    # Mapping of ISO codes to ERPNext Country names
+    country_map = {
+        "cn": "China", "tm": "Turkmenistan", "bd": "Bangladesh", "lb": "Lebanon", "pl": "Poland", 
+        "sl": "Sierra Leone", "be": "Belgium", "jo": "Jordan", "ee": "Estonia", "sa": "Saudi Arabia", 
+        "lv": "Latvia", "it": "Italy", "ge": "Georgia", "ru": "Russian Federation", "mt": "Malta", 
+        "me": "Montenegro", "ar": "Argentina", "fi": "Finland", "am": "Armenia", "fr": "France", 
+        "ro": "Romania", "re": "Reunion", "ba": "Bosnia and Herzegovina", "tn": "Tunisia", "sy": "Syria", 
+        "kr": "South Korea", "ca": "Canada", "xk": "Kosovo", "hr": "Croatia", "kz": "Kazakhstan", 
+        "vn": "Vietnam", "cz": "Czech Republic", "ec": "Ecuador", "bh": "Bahrain", "kg": "Kyrgyzstan", 
+        "cs": "Serbia", "au": "Australia", "nl": "Netherlands", "ae": "United Arab Emirates", 
+        "af": "Afghanistan", "pe": "Peru", "iq": "Iraq", "pa": "Panama", "po": "Poland", 
+        "ye": "Yemen", "sk": "Slovakia", "br": "Brazil", "uz": "Uzbekistan", "eg": "Egypt", 
+        "pt": "Portugal", "qa": "Qatar", "ua": "Ukraine", "al": "Albania", "hu": "Hungary", 
+        "cy": "Cyprus", "ir": "Iran", "gr": "Greece", "kw": "Kuwait", "uy": "Uruguay", 
+        "sd": "Sudan", "es": "Spain", "ly": "Libya", "my": "Malaysia", "de": "Germany", 
+        "us": "United States", "at": "Austria", "cl": "Chile", "jp": "Japan", "ie": "Ireland", 
+        "se": "Sweden", "om": "Oman", "lu": "Luxembourg", "az": "Azerbaijan", "in": "India", 
+        "dz": "Algeria", "ma": "Morocco", "bg": "Bulgaria", "dk": "Denmark", "gb": "United Kingdom", 
+        "co": "Colombia", "by": "Belarus", "si": "Slovenia", "mx": "Mexico", "ve": "Venezuela", 
+        "lt": "Lithuania", "th": "Thailand", "tw": "Taiwan"
+    }
+
     # Read Commercial Names into a dict keyed by Variety Code
     # Format: Country, Variety Code, Type, Comm. Name, Registration
     commercial_names = {}
@@ -18,8 +40,12 @@ def prepare_data():
                 continue
             if code not in commercial_names:
                 commercial_names[code] = []
+            
+            raw_country = row.get("Country", "").strip().lower()
+            country_name = country_map.get(raw_country, raw_country.capitalize()) # Fallback to capitalized
+
             commercial_names[code].append({
-                "country": row.get("Country", "").strip(),
+                "country": country_name,
                 "commercial_name": row.get("Comm. Name", "").strip(),
                 "registration_status": "Registered" if "Registered" in row.get("Registration", "") else "In Progress"
             })
