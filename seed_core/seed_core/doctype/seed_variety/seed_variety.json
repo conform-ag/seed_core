@@ -6,10 +6,15 @@
     "engine": "InnoDB",
     "field_order": [
         "variety_name",
-        "scientific_name",
         "crop",
         "segment",
+        "column_break_info",
+        "scientific_name",
         "description",
+        "section_break_stock",
+        "total_stock_qty",
+        "column_break_stock",
+        "selling_price",
         "section_break_names",
         "variety_names"
     ],
@@ -47,6 +52,36 @@
             "fieldname": "description",
             "fieldtype": "Text Small",
             "label": "Description"
+        },
+        {
+            "fieldname": "column_break_info",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "section_break_stock",
+            "fieldtype": "Section Break",
+            "label": "Stock & Pricing"
+        },
+        {
+            "fieldname": "total_stock_qty",
+            "fieldtype": "Float",
+            "label": "Total Stock Qty",
+            "read_only": 1,
+            "is_virtual": 1,
+            "in_list_view": 1,
+            "bold": 1
+        },
+        {
+            "fieldname": "column_break_stock",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "selling_price",
+            "fieldtype": "Currency",
+            "label": "Selling Price (per UoM)",
+            "read_only": 1,
+            "is_virtual": 1,
+            "in_list_view": 1
         },
         {
             "fieldname": "section_break_names",
@@ -88,6 +123,6 @@
     "sort_field": "modified",
     "sort_order": "DESC",
     "track_changes": 1,
-    "modified": "2024-01-01 10:00:00.000000",
+    "modified": "2024-01-09 13:25:00.000000",
     "modified_by": "Administrator"
 }

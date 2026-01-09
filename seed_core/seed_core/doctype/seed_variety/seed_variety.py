@@ -61,3 +61,44 @@ class SeedVariety(Document):
             return crop_group_name
         
         return "Seeds"
+
+    # Virtual field: Total Stock Quantity across all warehouses
+    @property
+    def total_stock_qty(self):
+        """Get total stock quantity from all Bins for this variety's Item"""
+        if not frappe.db.exists("Item", self.variety_name):
+            return 0
+        
+        result = frappe.db.sql("""
+            SELECT SUM(actual_qty) as total_qty
+            FROM `tabBin`
+            WHERE item_code = %s
+        """, (self.variety_name,), as_dict=True)
+        
+        return result[0].total_qty if result and result[0].total_qty else 0
+
+    # Virtual field: Selling Price from default Price List
+    @property
+    def selling_price(self):
+        """Get the selling price from the default selling price list"""
+        if not frappe.db.exists("Item", self.variety_name):
+            return 0
+        
+        # Get the default selling price list
+        default_price_list = frappe.db.get_single_value("Selling Settings", "selling_price_list")
+        
+        if not default_price_list:
+            # Fallback to Standard Selling
+            default_price_list = "Standard Selling"
+        
+        price = frappe.db.get_value(
+            "Item Price",
+            {
+                "item_code": self.variety_name,
+                "price_list": default_price_list,
+                "selling": 1
+            },
+            "price_list_rate"
+        )
+        
+        return price or 0
