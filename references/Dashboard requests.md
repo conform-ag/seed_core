@@ -1,4 +1,4 @@
-Yuksel Seeds — ERPNext Dashboard Requests (2025)
+Yuksel Seeds — ERPNext Dashboard Requests [YEAR]
 1. Sales Dashboard
 KPIs:
 - Total Sales Orders (Current Month & YTD)

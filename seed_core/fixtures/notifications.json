@@ -1,0 +1,112 @@
+[
+    {
+        "channel": "Email",
+        "condition": "doc.status == 'To Deliver_and_Bill'",
+        "creation": "2024-01-01 10:00:00.000000",
+        "days_in_advance": 0,
+        "docstatus": 0,
+        "doctype": "Notification",
+        "document_type": "Sales Order",
+        "enabled": 1,
+        "event": "Submit",
+        "is_standard": 1,
+        "message": "<p>A new Sales Order has been submitted: {{ doc.name }}</p>\n<p>Customer: {{ doc.customer }}</p>\n<p>Total: {{ doc.grand_total }}</p>",
+        "message_type": "Markdown",
+        "module": "Seed Core",
+        "name": "New Sales Order Submitted",
+        "owner": "Administrator",
+        "recipients": [
+            {
+                "email_by_role": "Sales Manager"
+            },
+            {
+                "email_by_role": "Stock Manager"
+            }
+        ],
+        "send_to_all_assignees": 0,
+        "sender": "ERPNext Notification <system@yukselseeds.ma>",
+        "subject": "New Sales Order Submitted: {{ doc.name }}"
+    },
+    {
+        "channel": "Email",
+        "condition": "doc.status == 'To Receive and Bill'",
+        "creation": "2024-01-01 10:00:00.000000",
+        "days_in_advance": 0,
+        "docstatus": 0,
+        "doctype": "Notification",
+        "document_type": "Purchase Order",
+        "enabled": 1,
+        "event": "Submit",
+        "is_standard": 1,
+        "message": "<p>A new Purchase Order has been submitted: {{ doc.name }}</p>\n<p>Supplier: {{ doc.supplier }}</p>\n<p>Total: {{ doc.grand_total }}</p>",
+        "message_type": "Markdown",
+        "module": "Seed Core",
+        "name": "New Purchase Order Submitted",
+        "owner": "Administrator",
+        "recipients": [
+            {
+                "email_by_role": "Purchase Manager"
+            },
+            {
+                "email_by_role": "Accounts Manager"
+            }
+        ],
+        "send_to_all_assignees": 0,
+        "sender": "ERPNext Notification <system@yukselseeds.ma>",
+        "subject": "New Purchase Order: {{ doc.name }}"
+    },
+    {
+        "channel": "System",
+        "condition": "doc.actual_qty < doc.projected_qty",
+        "creation": "2024-01-01 10:00:00.000000",
+        "days_in_advance": 0,
+        "docstatus": 0,
+        "doctype": "Notification",
+        "document_type": "Bin",
+        "enabled": 1,
+        "event": "Save",
+        "is_standard": 1,
+        "message": "Low Stock Alert for Item {{ doc.item_code }} in {{ doc.warehouse }}. Actual: {{ doc.actual_qty }}",
+        "message_type": "Markdown",
+        "module": "Seed Core",
+        "name": "Low Stock Alert (System)",
+        "owner": "Administrator",
+        "recipients": [
+            {
+                "email_by_role": "Stock Manager"
+            }
+        ],
+        "send_to_all_assignees": 0,
+        "sender": "System",
+        "subject": "Low Stock: {{ doc.item_code }}"
+    },
+    {
+        "channel": "Email",
+        "condition": "doc.expiry_date and doc.expiry_date < frappe.utils.add_days(frappe.utils.nowdate(), 90)",
+        "creation": "2024-01-01 10:00:00.000000",
+        "days_in_advance": 90,
+        "docstatus": 0,
+        "doctype": "Notification",
+        "document_type": "Batch",
+        "enabled": 1,
+        "event": "Days Before",
+        "is_standard": 1,
+        "message": "<p>Batch {{ doc.name }} is expiring on {{ doc.expiry_date }} (within 90 days).</p>\n<p>Item: {{ doc.item }}</p>",
+        "message_type": "Markdown",
+        "module": "Seed Core",
+        "name": "Seed Batch Expiry Warning",
+        "owner": "Administrator",
+        "recipients": [
+            {
+                "email_by_role": "Stock Manager"
+            },
+            {
+                "email_by_role": "Sales Manager"
+            }
+        ],
+        "send_to_all_assignees": 0,
+        "sender": "system@yukselseeds.ma",
+        "subject": "Expiry Warning: Batch {{ doc.name }}",
+        "value_of_date_field": "expiry_date"
+    }
+]
