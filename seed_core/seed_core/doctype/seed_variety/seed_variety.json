@@ -56,7 +56,7 @@
         },
         {
             "fieldname": "description",
-            "fieldtype": "Text Small",
+            "fieldtype": "Small Text",
             "label": "Description"
         },
         {
@@ -70,12 +70,12 @@
         },
         {
             "fieldname": "plant_characteristics",
-            "fieldtype": "Text Small",
+            "fieldtype": "Small Text",
             "label": "Plant Characteristics"
         },
         {
             "fieldname": "fruit_characteristics",
-            "fieldtype": "Text Small",
+            "fieldtype": "Small Text",
             "label": "Fruit Characteristics"
         },
         {
@@ -84,7 +84,7 @@
         },
         {
             "fieldname": "resistance_codes",
-            "fieldtype": "Text Small",
+            "fieldtype": "Small Text",
             "label": "Resistance Codes"
         },
         {
@@ -131,6 +131,7 @@
             "options": "Seed Variety Name"
         }
     ],
+    "allow_import": 1,
     "issingle": 0,
     "istable": 0,
     "module": "Seed Core",
