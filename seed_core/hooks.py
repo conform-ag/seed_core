@@ -247,3 +247,20 @@ after_install = "seed_core.install.after_install"
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
 
+
+# Fixtures
+# --------
+fixtures = [
+    {
+        "dt": "Custom Field",
+        "filters": [
+            [
+                "dt",
+                "in",
+                (
+                    "Batch",
+                ),
+            ]
+        ],
+    }
+]

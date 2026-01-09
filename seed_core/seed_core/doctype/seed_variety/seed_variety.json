@@ -89,8 +89,9 @@
         },
         {
             "fieldname": "cultivation_environment",
-            "fieldtype": "Data",
-            "label": "Cultivation Environment"
+            "fieldtype": "Select",
+            "label": "Cultivation Environment",
+            "options": "Greenhouse\nOpen field\nTunnel\nHitech\nNA"
         },
         {
             "fieldname": "section_break_stock",
@@ -158,6 +159,6 @@
     "sort_field": "modified",
     "sort_order": "DESC",
     "track_changes": 1,
-    "modified": "2024-01-09 13:35:00.000000",
+    "modified": "2024-01-09 13:45:00.000000",
     "modified_by": "Administrator"
 }
