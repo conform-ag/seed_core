@@ -30,14 +30,14 @@ def create_sales_dashboard():
     Charts must exist before being added to the dashboard.
     """
     # First, ensure we have at least one chart
-    chart_name = "Sales Orders This Month"
+    chart_name = "Sales Orders Last Month"
     if not frappe.db.exists("Dashboard Chart", chart_name):
         chart = frappe.new_doc("Dashboard Chart")
         chart.chart_name = chart_name
         chart.chart_type = "Count"
         chart.document_type = "Sales Order"
         chart.based_on = "transaction_date"
-        chart.timespan = "This Month"
+        chart.timespan = "Last Month"
         chart.time_interval = "Daily"
         chart.filters_json = "{}"
         chart.type = "Bar"
@@ -97,7 +97,7 @@ def create_regional_dashboards():
             chart.chart_type = "Count"
             chart.document_type = "Sales Order"
             chart.based_on = "transaction_date"
-            chart.timespan = "This Month"
+            chart.timespan = "Last Month"
             chart.time_interval = "Daily"
             chart.filters_json = "{}"
             chart.type = "Bar"
