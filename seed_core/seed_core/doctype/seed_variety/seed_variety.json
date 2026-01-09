@@ -51,7 +51,7 @@
             "fieldtype": "Link",
             "label": "Segment",
             "options": "Seed Segment",
-            "reqd": 1,
+            "reqd": 0,
             "in_list_view": 1
         },
         {
