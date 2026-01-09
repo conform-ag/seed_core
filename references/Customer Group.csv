@@ -1,0 +1,6 @@
+"Customer Group Name","Parent Customer Group","Is Group","Default Price List","Default Payment Terms Template","old_parent","ID (Accounts)","Advance Account (Accounts)","Company (Accounts)","Default Account (Accounts)","ID (Credit Limit)","Bypass Credit Limit Check at Sales Order (Credit Limit)","Company (Credit Limit)","Credit Limit (Credit Limit)"
+"All Customer Groups","",1,"","","","","","","","","","",""
+"Individual","All Customer Groups",0,"","","All Customer Groups","","","","","","","",""
+"Commercial","All Customer Groups",0,"","","All Customer Groups","","","","","","","",""
+"Non Profit","All Customer Groups",0,"","","All Customer Groups","","","","","","","",""
+"Government","All Customer Groups",0,"","","All Customer Groups","","","","","","","",""

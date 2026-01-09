@@ -1,0 +1,72 @@
+Territory Name,Parent Territory,Is Group
+Africa,All Territories,1
+Americas,All Territories,1
+Asia,All Territories,1
+Europe,All Territories,1
+Oceania,All Territories,1
+Albania,Europe,0
+Algeria,Africa,0
+Andorra,Europe,0
+Argentina,Americas,0
+Australia,Oceania,0
+Austria,Europe,0
+Azerbaijan,Asia,0
+Bosnia and Herzegovina,Europe,0
+Brazil,Americas,0
+Bulgaria,Europe,0
+Chile,Americas,0
+China,Asia,0
+Colombia,Americas,0
+Costa Rica,Americas,0
+Croatia,Europe,0
+Czech Republic,Europe,0
+Dominican Republic,Americas,0
+Ecuador,Americas,0
+Egypt,Africa,0
+Estonia,Europe,0
+Georgia,Asia,0
+Greece,Europe,0
+Hungary,Europe,0
+India,Asia,0
+Iran,Asia,0
+Iraq,Asia,0
+Jordan,Asia,0
+Kazakhstan,Asia,0
+Kenya,Africa,0
+Kosovo,Europe,0
+Kuwait,Asia,0
+Kyrgyzstan,Asia,0
+Latvia,Europe,0
+Lebanon,Asia,0
+Libya,Africa,0
+Lithuania,Europe,0
+Malaysia,Asia,0
+Mexico,Americas,0
+Montenegro,Europe,0
+Morocco,Africa,0
+Netherlands,Europe,0
+New Zealand,Oceania,0
+North Macedonia,Europe,0
+Pakistan,Asia,0
+Palestine State,Asia,0
+Poland,Europe,0
+Portugal,Europe,0
+Qatar,Asia,0
+Romania,Europe,0
+Russia,Asia,0
+Saudi Arabia,Asia,0
+Serbia,Europe,0
+Slovakia,Europe,0
+Slovenia,Europe,0
+South Africa,Africa,0
+Spain,Europe,0
+Taiwan,Asia,0
+Tajikistan,Asia,0
+Tunisia,Africa,0
+Turkey,Asia,0
+Turkmenistan,Asia,0
+Ukraine,Europe,0
+Uruguay,Americas,0
+Uzbekistan,Asia,0
+Venezuela,Americas,0
+Vietnam,Asia,0
