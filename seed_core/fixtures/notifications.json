@@ -107,6 +107,6 @@
         "send_to_all_assignees": 0,
         "sender": "system@yukselseeds.ma",
         "subject": "Expiry Warning: Batch {{ doc.name }}",
-        "value_of_date_field": "expiry_date"
+        "date_changed": "expiry_date"
     }
 ]
