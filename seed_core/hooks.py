@@ -268,17 +268,5 @@ fixtures = [
         "filters": [
             ["module", "=", "Seed Core"]
         ]
-    },
-    {
-        "dt": "Dashboard Chart",
-        "filters": [
-            ["module", "=", "Seed Core"]
-        ]
-    },
-    {
-        "dt": "Number Card",
-        "filters": [
-            ["module", "=", "Seed Core"]
-        ]
     }
 ]
