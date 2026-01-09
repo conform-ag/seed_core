@@ -1,0 +1,115 @@
+{
+    "actions": [],
+    "autoname": "format:Proc-{operation}-{MM}-{####}",
+    "creation": "2024-01-01 10:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "operation",
+        "input_section",
+        "input_item",
+        "input_batch",
+        "input_qty",
+        "output_section",
+        "output_item",
+        "output_batch_number",
+        "output_qty",
+        "waste_qty",
+        "amended_from"
+    ],
+    "fields": [
+        {
+            "fieldname": "operation",
+            "fieldtype": "Select",
+            "label": "Operation",
+            "options": "Cleaning\nTreating\nPacking",
+            "reqd": 1
+        },
+        {
+            "fieldname": "input_section",
+            "fieldtype": "Section Break",
+            "label": "Input"
+        },
+        {
+            "fieldname": "input_item",
+            "fieldtype": "Link",
+            "label": "Input Item",
+            "options": "Item",
+            "reqd": 1
+        },
+        {
+            "fieldname": "input_batch",
+            "fieldtype": "Link",
+            "label": "Input Batch",
+            "options": "Batch",
+            "reqd": 1,
+            "get_query": "seed_core.seed_core.doctype.seed_processing.seed_processing.get_batch_query"
+        },
+        {
+            "fieldname": "input_qty",
+            "fieldtype": "Float",
+            "label": "Input Qty",
+            "reqd": 1
+        },
+        {
+            "fieldname": "output_section",
+            "fieldtype": "Section Break",
+            "label": "Output"
+        },
+        {
+            "fieldname": "output_item",
+            "fieldtype": "Link",
+            "label": "Output Item",
+            "options": "Item",
+            "reqd": 1
+        },
+        {
+            "fieldname": "output_batch_number",
+            "fieldtype": "Data",
+            "label": "Output Batch Number (Auto if empty)"
+        },
+        {
+            "fieldname": "output_qty",
+            "fieldtype": "Float",
+            "label": "Output Qty",
+            "reqd": 1
+        },
+        {
+            "fieldname": "waste_qty",
+            "fieldtype": "Float",
+            "label": "Waste Qty"
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Seed Processing",
+            "read_only": 1
+        }
+    ],
+    "is_submittable": 1,
+    "issingle": 0,
+    "istable": 0,
+    "module": "Seed Core",
+    "name": "Seed Processing",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "role": "Stock Manager",
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "role": "Stock User",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

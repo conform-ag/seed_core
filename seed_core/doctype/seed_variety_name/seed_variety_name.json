@@ -1,0 +1,36 @@
+{
+    "actions": [],
+    "creation": "2024-01-01 10:00:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "country",
+        "commercial_name"
+    ],
+    "fields": [
+        {
+            "fieldname": "country",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Country",
+            "options": "Country",
+            "reqd": 1
+        },
+        {
+            "fieldname": "commercial_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Commercial Name",
+            "reqd": 1
+        }
+    ],
+    "istable": 1,
+    "module": "Seed Core",
+    "name": "Seed Variety Name",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

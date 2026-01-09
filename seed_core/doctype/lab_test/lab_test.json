@@ -1,0 +1,92 @@
+{
+    "actions": [],
+    "autoname": "format:LAB-{batch}-{MM}-{YY}-{####}",
+    "creation": "2024-01-01 10:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "batch",
+        "test_date",
+        "column_break_1",
+        "status",
+        "section_break_results",
+        "germination_percent",
+        "purity_percent",
+        "moisture_percent",
+        "notes"
+    ],
+    "fields": [
+        {
+            "fieldname": "batch",
+            "fieldtype": "Link",
+            "label": "Batch",
+            "options": "Batch",
+            "reqd": 1
+        },
+        {
+            "default": "Today",
+            "fieldname": "test_date",
+            "fieldtype": "Date",
+            "label": "Test Date",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "Pending",
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Pending\nPass\nFail\nProvisional"
+        },
+        {
+            "fieldname": "section_break_results",
+            "fieldtype": "Section Break",
+            "label": "Test Results"
+        },
+        {
+            "fieldname": "germination_percent",
+            "fieldtype": "Percent",
+            "label": "Germination %"
+        },
+        {
+            "fieldname": "purity_percent",
+            "fieldtype": "Percent",
+            "label": "Purity %"
+        },
+        {
+            "fieldname": "moisture_percent",
+            "fieldtype": "Percent",
+            "label": "Moisture %"
+        },
+        {
+            "fieldname": "notes",
+            "fieldtype": "Small Text",
+            "label": "Notes"
+        }
+    ],
+    "issingle": 0,
+    "istable": 0,
+    "module": "Seed Core",
+    "name": "Lab Test",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "read": 1,
+            "role": "System Manager",
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "role": "Stock Manager",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

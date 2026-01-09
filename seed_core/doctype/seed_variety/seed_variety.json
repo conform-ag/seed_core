@@ -1,0 +1,91 @@
+{
+    "actions": [],
+    "autoname": "field:variety_name",
+    "creation": "2024-01-01 10:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "variety_name",
+        "scientific_name",
+        "crop",
+        "segment",
+        "description",
+        "section_break_names",
+        "variety_names"
+    ],
+    "fields": [
+        {
+            "fieldname": "variety_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Variety Name (Code)",
+            "reqd": 1,
+            "unique": 1
+        },
+        {
+            "fieldname": "scientific_name",
+            "fieldtype": "Data",
+            "label": "Scientific Name"
+        },
+        {
+            "fieldname": "crop",
+            "fieldtype": "Link",
+            "label": "Crop",
+            "options": "Seed Crop",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "segment",
+            "fieldtype": "Link",
+            "label": "Segment",
+            "options": "Seed Segment",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Text Small",
+            "label": "Description"
+        },
+        {
+            "fieldname": "section_break_names",
+            "fieldtype": "Section Break",
+            "label": "Commercial Names"
+        },
+        {
+            "fieldname": "variety_names",
+            "fieldtype": "Table",
+            "label": "Variety Names",
+            "options": "Seed Variety Name"
+        }
+    ],
+    "issingle": 0,
+    "istable": 0,
+    "module": "Seed Core",
+    "name": "Seed Variety",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "role": "Stock Manager",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

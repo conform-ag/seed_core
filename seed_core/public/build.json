@@ -1,0 +1,8 @@
+{
+    "js/seed_core.min.js": [
+        "public/js/seed_core.js"
+    ],
+    "css/seed_core.min.css": [
+        "public/css/seed_core.css"
+    ]
+}
