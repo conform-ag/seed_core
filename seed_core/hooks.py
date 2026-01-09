@@ -83,7 +83,7 @@ app_include_js = "/assets/seed_core/js/seed_core.min.js"
 # ------------
 
 # before_install = "seed_core.install.before_install"
-# after_install = "seed_core.install.after_install"
+after_install = "seed_core.install.after_install"
 
 # Uninstallation
 # ------------
