@@ -1,5 +1,6 @@
 [
     {
+        "based_on": "transaction_date",
         "chart_name": "Monthly Sales Trend",
         "chart_type": "Line",
         "creation": "2024-01-01 10:00:00.000000",
