@@ -2,6 +2,7 @@
     {
         "default": null,
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "section_break_quality",
         "fieldtype": "Section Break",
@@ -39,6 +40,7 @@
     {
         "default": null,
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "germination_percent",
         "fieldtype": "Float",
@@ -76,6 +78,7 @@
     {
         "default": null,
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "purity_percent",
         "fieldtype": "Float",
@@ -113,6 +116,7 @@
     {
         "default": null,
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "germination_test_date",
         "fieldtype": "Date",
@@ -150,6 +154,7 @@
     {
         "default": null,
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "section_break_treatments",
         "fieldtype": "Section Break",
@@ -187,6 +192,7 @@
     {
         "default": "0",
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "is_organic",
         "fieldtype": "Check",
@@ -224,6 +230,7 @@
     {
         "default": "0",
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "is_gspp",
         "fieldtype": "Check",
@@ -261,6 +268,7 @@
     {
         "default": "0",
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "is_pelleted",
         "fieldtype": "Check",
@@ -298,6 +306,7 @@
     {
         "default": "0",
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "is_primed",
         "fieldtype": "Check",
@@ -335,6 +344,7 @@
     {
         "default": "0",
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "is_coated",
         "fieldtype": "Check",
@@ -370,6 +380,7 @@
     {
         "default": "0",
         "description": null,
+        "doctype": "Custom Field",
         "dt": "Batch",
         "fieldname": "is_treated",
         "fieldtype": "Check",
