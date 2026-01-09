@@ -10,6 +10,12 @@ class SeedVariety(Document):
         """Create an ERPNext Item when a new Seed Variety is created"""
         self.create_item_if_not_exists()
 
+    @frappe.whitelist()
+    def sync_item(self):
+        """Manually trigger item creation/update"""
+        self.create_item_if_not_exists()
+        frappe.msgprint(f"Item synced for {self.variety_name}", indicator="green", alert=True)
+
     def create_item_if_not_exists(self):
         """
         Creates an Item linked to this Seed Variety with proper defaults for seed management:
@@ -39,7 +45,7 @@ class SeedVariety(Document):
             item.description = f"{self.crop} - {self.variety_name}"
         
         item.insert(ignore_permissions=True)
-        frappe.msgprint(f"Item '{self.variety_name}' created automatically", indicator="green", alert=True)
+        # We don't msgprint in after_insert usually as it might be background, but sync_item will handle it.
 
     def get_or_create_item_group(self):
         """Get or create the crop-based item group under Seeds"""

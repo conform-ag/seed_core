@@ -11,6 +11,12 @@
         "column_break_info",
         "scientific_name",
         "description",
+        "section_break_specs",
+        "plant_characteristics",
+        "fruit_characteristics",
+        "column_break_specs",
+        "resistance_codes",
+        "cultivation_environment",
         "section_break_stock",
         "total_stock_qty",
         "column_break_stock",
@@ -56,6 +62,35 @@
         {
             "fieldname": "column_break_info",
             "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "section_break_specs",
+            "fieldtype": "Section Break",
+            "label": "Specifications"
+        },
+        {
+            "fieldname": "plant_characteristics",
+            "fieldtype": "Text Small",
+            "label": "Plant Characteristics"
+        },
+        {
+            "fieldname": "fruit_characteristics",
+            "fieldtype": "Text Small",
+            "label": "Fruit Characteristics"
+        },
+        {
+            "fieldname": "column_break_specs",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "resistance_codes",
+            "fieldtype": "Text Small",
+            "label": "Resistance Codes"
+        },
+        {
+            "fieldname": "cultivation_environment",
+            "fieldtype": "Data",
+            "label": "Cultivation Environment"
         },
         {
             "fieldname": "section_break_stock",
@@ -123,6 +158,6 @@
     "sort_field": "modified",
     "sort_order": "DESC",
     "track_changes": 1,
-    "modified": "2024-01-09 13:25:00.000000",
+    "modified": "2024-01-09 13:35:00.000000",
     "modified_by": "Administrator"
 }
