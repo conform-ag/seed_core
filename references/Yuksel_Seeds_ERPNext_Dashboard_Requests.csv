@@ -1,0 +1,95 @@
+Module,KPIs,Graphs,Tables
+Sales,"- Total Sales Orders (Current Month & YTD)
+- Confirmed Orders
+- Pending Approvals
+- Overdue Deliveries
+- Total Revenue
+- Average Order Value
+- Top 10 Customers
+- Sales by Crop","- Monthly Sales Trend
+- Sales by Region
+- Sales by Crop
+- Sales by Variety
+- Delivery Delays Trend","- Open Sales Orders
+- Orders at Risk
+- Biggest Orders of the Month
+- Regional Performance Table"
+Purchase,"- Purchase Orders This Month
+- Pending Approvals
+- Delivery Delays
+- Total Procurement Spend
+- Average Supplier Delivery Time","- Monthly Spend Breakdown
+- Procurement by Supplier
+- Procurement by Crop Category
+- Delivery Lead-Time Performance","- Open Purchase Orders
+- Supplier Delay List
+- Price Evolution Table"
+Stock & Inventory,"- Total Inventory Value
+- Items Below Reorder Level
+- Negative Stock Items
+- Expiring Batches
+- Stock by Warehouse","- Inventory Value Trend
+- Stock Ageing Chart
+- Batch Expiry Trend
+- Stock Movement Heatmap","- Low Stock Items
+- Expiry List
+- Stock by Warehouse
+- Material Transfers"
+Accounting & Finance,"- Invoiced Total (Month/YTD)
+- Outstanding Receivables
+- Outstanding Payables
+- Overdue Invoices
+- Cash Position","- Revenue Trend
+- Receivables Ageing
+- Payables Ageing
+- DSO Trend
+- Profitability (if enabled)","- Open Invoices
+- Overdue Customer Payments
+- Overdue Supplier Payments
+- Payments Received This Week"
+CRM,"- New Leads
+- New Opportunities
+- Opportunities Won/Lost
+- Lead Response Time
+- Pipeline Value","- Pipeline Funnel
+- Leads by Source
+- Opportunities by Country/Region
+- Win Ratio Trend","- Open Opportunities
+- Leads Without Follow-up
+- Customer Interactions Log"
+Quality Control,"- QC Tests Completed
+- Pass Rate
+- Batches in Quarantine
+- Failed Batches
+- Average QC Test Duration","- Germination % Trend
+- QC Failure Causes Breakdown
+- QC Officer Workload","- Failed Batches List
+- Tests Awaiting Validation
+- QC Reports by Warehouse"
+HR,"- Employees by Subsidiary
+- Upcoming Leave
+- Open Leave Requests
+- Expense Claims Pending
+- Monthly Training Hours","- Staff Distribution by Department
+- Monthly Leave Patterns
+- Expense Breakdown","- Pending HR Approvals
+- Contract Renewals Soon
+- Attendance Log"
+System Administration,"- Active Users
+- Login Failures
+- Server Response Time
+- Backup Status
+- Email Queue Status","- Login Activity Timeline
+- Error Logs by Category
+- Server Resource Usage","- Failed Email Logs
+- Scheduled Jobs Status
+- Permissions Overview"
+Yuksel Seeds Custom,"Regional KPIs per zone:
+- Europe (Nico)
+- Maghreb/Africa (Nassir)
+- Poland (Oskar)
+- Netherlands (Nico)
+- LATAM (Miguel)
+- USA/Canada (Hicham)","- Strategic Crop Graphs:
+Tomato, Pepper, Cucumber, Kapia, Sweetloom","- Subsidiary Table:
+Spain, Morocco, Mexico, Netherlands, France"

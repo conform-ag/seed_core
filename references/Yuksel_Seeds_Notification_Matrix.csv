@@ -1,0 +1,27 @@
+Module,Trigger / Event,Condition,Recipients,Purpose,Frequency,Email Subject
+Sales,Sales Order Submitted,docstatus = 1,"Sales Manager, Area Manager, Logistics",Visibility of new orders,Immediate,New Sales Order Submitted
+Sales,Sales Order Pending Approval,Workflow = Pending Approval,Approver,Accelerate approval workflow,Immediate,Sales Order Requires Your Approval
+Sales,Sales Order Delayed,Delivery date < today AND delivered < 100%,"Sales Manager, Logistics",Follow-up overdue deliveries,Daily,Sales Order Delivery Overdue
+Sales,Sales Order On Hold / Stopped,Status changed,"Sales Director, Finance, Logistics",Align teams when blocking orders,Immediate,Sales Order Status Changed
+Purchase,Purchase Order Submitted,docstatus = 1,"Procurement, Finance",Track supplier commitments,Immediate,Purchase Order Submitted
+Purchase,PO Pending Approval > 48h,Pending > 48h,Approver,Avoid approval delays,Daily,Purchase Order Approval Pending
+Purchase,Delivery Date Approaching,3 days before delivery,"Logistics, Procurement",Control supplier deliveries,Daily,PO Delivery Approaching
+Stock,Low Stock Alert,Actual Qty < Reorder Level,"Stock Manager, Logistics, Area Manager",Prevent stockouts,Real-time,Low Stock Alert ? Item X
+Stock,Negative Stock,Actual Qty < 0,"Stock Manager, Finance",Avoid accounting inconsistencies,Real-time,Negative Stock Detected
+Stock,Material Transfer Submitted,Stock Entry = Material Transfer,Logistics,Track warehouse movements,Immediate,Material Transfer Recorded
+Stock,Batch Expiry Approaching,Expiry < 90 days,"Logistics, Sales, Country Manager",Avoid viability issues,Weekly,Seed Batch Expiry Warning
+Finance,Sales Invoice Submitted,docstatus = 1,"Finance, Sales",Manage payments & revenue,Immediate,Sales Invoice Issued
+Finance,Invoice Overdue,Due date < today,"Finance, Sales Manager",Improve receivables collection,Daily,Overdue Invoice ? Action Required
+Finance,Payment Entry Cancelled,Cancel event,Finance Manager,Control accounting changes,Immediate,Payment Entry Cancelled
+CRM,New Lead,Lead created,"Area Manager, Country Manager",Quick follow-up,Immediate,New Lead Assigned
+CRM,Lead Not Updated,No update in 7 days,"Salesperson, Area Manager",Consistent CRM follow-up,Daily,Lead Follow-Up Required
+CRM,Opportunity Closing Soon,3 days before expected close,Sales Manager,Accurate forecasting,Daily,Opportunity Closing Date Approaching
+Quality Control,QC Test Completed,Test completed,"Stock Manager, Sales, Product Development",Validate batch release,Immediate,QC Result Available
+Quality Control,QC Test Failure,Germination < standard,"QA Manager, Stock Manager, Sales Director",Manage quality risks,Immediate,Quality Alert ? Batch Requires Review
+HR,Leave Request Submitted,Request created,Manager,Approvals,Immediate,New Leave Request
+HR,Expense Claim Submitted,Submitted,Accounting Manager,Faster reimbursements,Immediate,Expense Claim Submitted
+HR,Evaluation Reminder,Monthly,Managers,Track evaluations,Monthly,Employee Evaluation Reminder
+System Admin,Login Failures,5 failed attempts,"IT Manager, System Admin",Detect intrusion attempts,Immediate,Security Alert ? Failed Logins
+System Admin,Backup Status,Success/Failure,IT Manager,Ensure system safety,After backup,ERPNext Backup Report
+Regional Sales,Sales Order Created (Regional),Region = Europe/Maghreb/Poland/Mexico/USA,"Nico, Nassir, Oskar, Miguel, Hicham",Regional alignment,Immediate,New Sales Order ? Your Region
+Critical Varieties,Low stock / expiry / order spike,"For Sweetloom, Kapia, etc.","Sales Manager, Product Dev",Protect key SKUs,Real-time,Critical Variety Alert
