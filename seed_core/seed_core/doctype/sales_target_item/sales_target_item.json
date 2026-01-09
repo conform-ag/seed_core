@@ -1,0 +1,95 @@
+{
+    "actions": [],
+    "creation": "2024-01-09 13:28:00.000000",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "item_code",
+        "item_group",
+        "month",
+        "column_break_history",
+        "history_qty",
+        "history_amount",
+        "column_break_forecast",
+        "forecast_qty",
+        "forecast_amount",
+        "delta_percent"
+    ],
+    "fields": [
+        {
+            "fieldname": "item_code",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Item",
+            "options": "Item"
+        },
+        {
+            "fieldname": "item_group",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Item Group",
+            "options": "Item Group"
+        },
+        {
+            "default": "Jan",
+            "fieldname": "month",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Month",
+            "options": "Jan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_history",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "history_qty",
+            "fieldtype": "Float",
+            "in_list_view": 1,
+            "label": "LY Qty",
+            "read_only": 1
+        },
+        {
+            "fieldname": "history_amount",
+            "fieldtype": "Currency",
+            "label": "LY Amount",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_forecast",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "forecast_qty",
+            "fieldtype": "Float",
+            "in_list_view": 1,
+            "label": "Target Qty",
+            "reqd": 1
+        },
+        {
+            "fieldname": "forecast_amount",
+            "fieldtype": "Currency",
+            "in_list_view": 1,
+            "label": "Target Amount"
+        },
+        {
+            "fieldname": "delta_percent",
+            "fieldtype": "Percent",
+            "in_list_view": 1,
+            "label": "Delta %",
+            "read_only": 1
+        }
+    ],
+    "istable": 1,
+    "module": "Seed Core",
+    "name": "Sales Target Item",
+    "owner": "Administrator",
+    "permissions": [],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1,
+    "modified": "2024-01-09 13:28:00.000000",
+    "modified_by": "Administrator"
+}

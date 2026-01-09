@@ -61,6 +61,13 @@
             "link_type": "Report",
             "onboard": 0,
             "type": "Link"
+        },
+        {
+            "label": "Sales Target Plan",
+            "link_count": 0,
+            "link_type": "DocType",
+            "onboard": 1,
+            "type": "Link"
         }
     ],
     "modified": "2024-01-01 10:01:00.000000",

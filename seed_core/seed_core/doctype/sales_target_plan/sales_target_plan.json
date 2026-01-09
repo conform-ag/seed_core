@@ -1,0 +1,195 @@
+{
+    "actions": [],
+    "autoname": "naming_series:",
+    "creation": "2024-01-09 13:28:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "is_submittable": 1,
+    "field_order": [
+        "naming_series",
+        "fiscal_year",
+        "company",
+        "column_break_main",
+        "target_level",
+        "party_type",
+        "party",
+        "section_break_dates",
+        "from_date",
+        "column_break_dates",
+        "to_date",
+        "section_break_targets",
+        "targets",
+        "section_break_totals",
+        "total_history_qty",
+        "total_history_amount",
+        "column_break_totals",
+        "total_forecast_qty",
+        "total_forecast_amount",
+        "amended_from"
+    ],
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Series",
+            "options": "STP-.YYYY.-",
+            "reqd": 1
+        },
+        {
+            "fieldname": "fiscal_year",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Fiscal Year",
+            "options": "Fiscal Year",
+            "reqd": 1
+        },
+        {
+            "fieldname": "company",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Company",
+            "options": "Company",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_main",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "End Customer",
+            "fieldname": "target_level",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Target Level",
+            "options": "End Customer\nDistributor/Subsidiary",
+            "reqd": 1
+        },
+        {
+            "default": "Customer",
+            "fieldname": "party_type",
+            "fieldtype": "Select",
+            "label": "Party Type",
+            "options": "Customer\nCustomer Group\nTerritory",
+            "reqd": 1
+        },
+        {
+            "fieldname": "party",
+            "fieldtype": "Dynamic Link",
+            "in_list_view": 1,
+            "label": "Party",
+            "options": "party_type",
+            "reqd": 1
+        },
+        {
+            "fieldname": "section_break_dates",
+            "fieldtype": "Section Break",
+            "label": "Period"
+        },
+        {
+            "fieldname": "from_date",
+            "fieldtype": "Date",
+            "label": "From Date"
+        },
+        {
+            "fieldname": "column_break_dates",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "to_date",
+            "fieldtype": "Date",
+            "label": "To Date"
+        },
+        {
+            "fieldname": "section_break_targets",
+            "fieldtype": "Section Break",
+            "label": "Monthly Targets"
+        },
+        {
+            "fieldname": "targets",
+            "fieldtype": "Table",
+            "label": "Targets",
+            "options": "Sales Target Item",
+            "reqd": 1
+        },
+        {
+            "fieldname": "section_break_totals",
+            "fieldtype": "Section Break",
+            "label": "Totals"
+        },
+        {
+            "fieldname": "total_history_qty",
+            "fieldtype": "Float",
+            "label": "Total LY Qty",
+            "read_only": 1
+        },
+        {
+            "fieldname": "total_history_amount",
+            "fieldtype": "Currency",
+            "label": "Total LY Amount",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_totals",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "total_forecast_qty",
+            "fieldtype": "Float",
+            "label": "Total Target Qty",
+            "read_only": 1
+        },
+        {
+            "fieldname": "total_forecast_amount",
+            "fieldtype": "Currency",
+            "label": "Total Target Amount",
+            "read_only": 1
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Sales Target Plan",
+            "print_hide": 1,
+            "read_only": 1
+        }
+    ],
+    "issingle": 0,
+    "istable": 0,
+    "module": "Seed Core",
+    "name": "Sales Target Plan",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "role": "Sales Manager",
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "read": 1,
+            "role": "Sales User",
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1,
+    "modified": "2024-01-09 13:28:00.000000",
+    "modified_by": "Administrator"
+}
