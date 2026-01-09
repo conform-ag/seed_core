@@ -40,6 +40,26 @@ def create_stock_dashboard():
     # Placeholder for Stock Dashboard Logic
     pass
 
+def create_doctype_dashboards():
+    """
+    Configures standard dashboards for specific DocTypes (Batch, Seed Variety)
+    """
+    # Batch Dashboard (Lab Tests, Stock Moves)
+    if not frappe.db.exists("Dashboard", "Batch Dashboard"):
+        d = frappe.new_doc("Dashboard")
+        d.dashboard_name = "Batch Dashboard"
+        d.module = "Seed Core"
+        d.is_standard = 1
+        d.save()
+        
+    # Seed Variety Dashboard (Stock Level, Sales)
+    if not frappe.db.exists("Dashboard", "Seed Variety Dashboard"):
+        d = frappe.new_doc("Dashboard")
+        d.dashboard_name = "Seed Variety Dashboard"
+        d.module = "Seed Core"
+        d.is_standard = 1
+        d.save()
+
 def create_regional_dashboards():
     # Create specific dashboards for:
     regions = ["Europe - Nico", "Maghreb - Nassir", "Poland - Oskar", "LATAM - Miguel"]
