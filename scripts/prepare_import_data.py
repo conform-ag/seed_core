@@ -111,10 +111,8 @@ def prepare_data():
                 for name in names[1:]:
                     child_row = {k: "" for k in fieldnames} # Empty row
                     # Key ID 'variety_name' usually needed for update/upsert, 
-                    # but for fresh import typically we leave main blank OR fill it. 
-                    # Frappe Data Import usually prefers main ID filled for all rows OR just first.
-                    # Safest is filling main ID (variety_name) for all rows to group them.
-                    child_row["variety_name"] = code
+                    # but user requested to leave it empty for child rows.
+                    # child_row["variety_name"] = code 
                     child_row.update({
                         "variety_names.country": name["country"],
                         "variety_names.commercial_name": name["commercial_name"],
