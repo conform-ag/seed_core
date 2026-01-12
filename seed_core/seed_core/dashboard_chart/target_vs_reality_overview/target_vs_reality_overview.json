@@ -1,0 +1,18 @@
+{
+    "chart_name": "Target vs Reality Overview",
+    "chart_type": "Custom",
+    "creation": "2024-01-12 12:00:00.000000",
+    "docstatus": 0,
+    "doctype": "Dashboard Chart",
+    "dynamic_filters_json": "[]",
+    "filters_json": "[]",
+    "is_public": 1,
+    "is_standard": 1,
+    "module": "Seed Core",
+    "name": "Target vs Reality Overview",
+    "owner": "Administrator",
+    "source": "seed_core.seed_core.report.sales_target_vs_reality.sales_target_vs_reality.get_dashboard_chart",
+    "time_interval": "Monthly",
+    "timespan": "Last Year",
+    "type": "Custom"
+}

@@ -1,11 +1,25 @@
 {
     "charts": [
         {
+            "chart_name": "Target vs Reality Overview",
+            "label": "Target vs Reality Overview"
+        },
+        {
             "chart_name": "Seed Sales Dashboard",
             "label": "Sales Overview"
         }
     ],
-    "content": "[{\"type\":\"header\",\"data\":{\"text\":\"Seed Management\",\"level\":3}},{\"type\":\"card\",\"data\":{\"card_name\":\"Seed Master Data\",\"col\":4,\"color\":\"Green\"}},{\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4,\"color\":\"Blue\"}},{\"type\":\"card\",\"data\":{\"card_name\":\"Traceability\",\"col\":4,\"color\":\"Orange\"}}]",
+    "content": "[{\"type\":\"header\",\"data\":{\"text\":\"Performance Overview\",\"level\":3}},{\"type\":\"number_card\",\"data\":{\"card_name\":\"Total Seed Varieties\",\"col\":4}},{\"type\":\"number_card\",\"data\":{\"card_name\":\"Total Distributors\",\"col\":4}},{\"type\":\"chart\",\"data\":{\"chart_name\":\"Target vs Reality Overview\",\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"Seed Management\",\"level\":3}},{\"type\":\"card\",\"data\":{\"card_name\":\"Seed Master Data\",\"col\":4,\"color\":\"Green\"}},{\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4,\"color\":\"Blue\"}},{\"type\":\"card\",\"data\":{\"card_name\":\"Traceability\",\"col\":4,\"color\":\"Orange\"}}]",
+    "number_cards": [
+        {
+            "label": "Total Seed Varieties",
+            "name": "Total Seed Varieties"
+        },
+        {
+            "label": "Total Distributors",
+            "name": "Total Distributors"
+        }
+    ],
     "creation": "2024-01-01 10:00:00.000000",
     "docstatus": 0,
     "doctype": "Workspace",

@@ -1,0 +1,20 @@
+{
+    "align_labels_right": 0,
+    "creation": "2024-01-12 12:00:00.000000",
+    "custom_format": 1,
+    "default_print_language": "en",
+    "disabled": 0,
+    "doc_type": "Sales Target Plan",
+    "docstatus": 0,
+    "doctype": "Print Format",
+    "html": "<!-- HTML Loaded from file -->",
+    "line_breaks": 0,
+    "module": "Seed Core",
+    "name": "Sales Target Plan Classic",
+    "owner": "Administrator",
+    "print_format_builder": 0,
+    "print_format_type": "Jinja",
+    "raw_printing": 0,
+    "show_section_headings": 0,
+    "standard": "Yes"
+}

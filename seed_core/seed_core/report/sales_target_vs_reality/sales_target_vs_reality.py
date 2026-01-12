@@ -61,35 +61,40 @@ def get_columns():
     ]
 
 def get_data(filters):
-    if not filters.get("sales_target_plan"):
+    # 1. Fetch relevant Sales Target Plans
+    plans = get_plans(filters)
+    
+    if not plans:
         return []
 
-    plan = frappe.get_doc("Sales Target Plan", filters.get("sales_target_plan"))
+    # 2. Initialize Aggregators
+    history_map = {}
+    target_map = {}
+    total_varieties = set()
     
-    # Get Historical Data (Last Year)
-    history_map = {row.month: flt(row.history_amount) for row in plan.targets}
-    
-    # Get Target Data (Goal)
-    target_map = {row.month: flt(row.forecast_amount) for row in plan.targets}
-    
-    # Calculate Exponential Smoothing (Forecast)
-    # Using simple exponential smoothing on historical data to project current year trend
-    # Ideally this runs on a longer series, but we'll use LY as baseline + logic
-    # For this demo, let's assume we smooth LY to get "Stable LY" and apply a growth factor?
-    # Or strict Exp Smoothing: S_t = alpha * Y_t + (1-alpha) * S_t-1
-    # We will generate a "Statistical Forecast" based on LY data smoothed.
-    
+    # 3. Aggregate Data from Plans
+    for plan in plans:
+        # Apply Plan Level Party Filters if necessary 
+        # (Though get_plans handles this, we might have multiple plans)
+        
+        # Filter Rows (Crop/Variety)
+        plan_rows = filter_plan_rows(plan, filters)
+        
+        for row in plan_rows:
+            month = row.month
+            history_map[month] = history_map.get(month, 0) + flt(row.history_amount)
+            target_map[month] = target_map.get(month, 0) + flt(row.forecast_amount)
+            total_varieties.add(row.seed_variety)
+
+    # 4. Calculate Stat Forecast (AI) based on Aggregated History
     stat_forecast_map = calculate_exponential_smoothing(history_map)
     
-    # Get Current Actuals (Real-time Reality)
-    current_actuals_map = get_current_actuals(plan)
+    # 5. Get Current Actuals (Reality) - Filtered by relevant Varieties & Scope
+    current_actuals_map = get_aggregated_actuals(filters, total_varieties)
     
+    # 6. Build Final Data Rows
     data = []
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    
-    total_ly = 0
-    total_stat = 0
-    total_target = 0
     
     for month in months:
         ly = history_map.get(month, 0)
@@ -116,26 +121,73 @@ def get_data(filters):
             "status": status
         }
         data.append(row)
-        
-        total_ly += ly
-        total_stat += stat
-        total_target += target
 
     return data
 
+def get_plans(filters):
+    conditions = {"docstatus": 1, "company": filters.get("company"), "fiscal_year": filters.get("fiscal_year")}
+    
+    if filters.get("customer"):
+        conditions["party_type"] = "Customer"
+        conditions["party"] = filters.get("customer")
+    elif filters.get("country"):
+        # If Country is selected, we want Plans for that Territory OR Plans for Customers in that Territory
+        # This is complex. Let's simplify:
+        # 1. Country Level Plans: party_type="Territory", party=Country
+        # 2. Distributor Plans: party_type="Customer", party IN (Customers in Country)
+        
+        # We'll handle this manually via frappe.get_all or SQL.
+        pass
+    
+    # Simple fetching for now, refine for Country/Hierarchy logic
+    plans = frappe.get_all("Sales Target Plan", filters=conditions, fields=["name", "party_type", "party"])
+    
+    # If Country Filter is set, we need to add the hierarchy logic manually
+    if filters.get("country") and not filters.get("customer"):
+        country = filters.get("country")
+        # Get all territories under this country
+        territory_lft, territory_rgt = frappe.db.get_value("Territory", country, ["lft", "rgt"])
+        
+        # Find plans where party is territory in range OR party is customer in territory in range
+        # Use SQL for this complex join/filter
+        query = f"""
+            SELECT name FROM `tabSales Target Plan`
+            WHERE docstatus = 1 
+            AND company = %(company)s 
+            AND fiscal_year = %(fiscal_year)s
+            AND (
+                (party_type = 'Territory' AND party IN (SELECT name FROM `tabTerritory` WHERE lft >= {territory_lft} AND rgt <= {territory_rgt}))
+                OR
+                (party_type = 'Customer' AND party IN (SELECT name FROM `tabCustomer` WHERE territory IN (SELECT name FROM `tabTerritory` WHERE lft >= {territory_lft} AND rgt <= {territory_rgt})))
+            )
+        """
+        plans = frappe.db.sql(query, filters, as_dict=True)
+
+    loaded_plans = []
+    for p in plans:
+        loaded_plans.append(frappe.get_doc("Sales Target Plan", p.name))
+        
+    return loaded_plans
+
+def filter_plan_rows(plan, filters):
+    rows = []
+    for row in plan.targets:
+        # Filter by Crop
+        if filters.get("crop") and row.crop != filters.get("crop"):
+            continue
+        # Filter by Variety
+        if filters.get("seed_variety") and row.seed_variety != filters.get("seed_variety"):
+            continue
+            
+        rows.append(row)
+    return rows
+
 def calculate_exponential_smoothing(history_map):
-    # Simple Exponential Smoothing
-    # Alpha: smoothing factor (0 < alpha < 1)
     alpha = 0.5 
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     
     forecast = {}
-    last_val = 0
-    
-    # Initialize with average of first 3 months or similar? 
-    # Or just start with first value.
-    if months:
-        last_val = history_map.get(months[0], 0)
+    last_val = history_map.get(months[0], 0) if months else 0
     
     for month in months:
         actual = history_map.get(month, 0)
@@ -144,40 +196,39 @@ def calculate_exponential_smoothing(history_map):
         else:
              smoothed = alpha * actual + (1 - alpha) * last_val
         
-        # We apply a small growth assumption for "Next Year Forecast" based on this smoothing
-        # Let's say +5% trend
         forecast[month] = smoothed * 1.05
         last_val = smoothed
         
     return forecast
 
-def get_current_actuals(plan):
-    # Fetch Sales Invoice data for the current plan period
-    # Aggregated by month
+def get_aggregated_actuals(filters, varieties):
+    # Logic to fetch actual sales for the given scope and varieties
     
-    # Build party filter
-    party_filter = ""
-    if plan.party_type == "Customer":
-        party_filter = "AND si.customer = %(party)s"
-    elif plan.party_type == "Customer Group":
-        party_filter = "AND si.customer IN (SELECT name FROM `tabCustomer` WHERE customer_group = %(party)s)"
-    elif plan.party_type == "Territory":
-         # Use Nested Set logic matching what we did in DocType
-        territory_lft, territory_rgt = frappe.db.get_value("Territory", plan.party, ["lft", "rgt"])
-        party_filter = f"""
+    # Time window
+    fy = frappe.get_doc("Fiscal Year", filters.get("fiscal_year"))
+    
+    # Scope Filter
+    scope_condition = ""
+    if filters.get("customer"):
+        scope_condition = f"AND si.customer = '{filters.get('customer')}'"
+    elif filters.get("country"):
+        territory_lft, territory_rgt = frappe.db.get_value("Territory", filters.get("country"), ["lft", "rgt"])
+        scope_condition = f"""
             AND si.territory IN (
                 SELECT name FROM `tabTerritory`
                 WHERE lft >= {territory_lft} AND rgt <= {territory_rgt}
             )
         """
-
-    # Filter by items (varieties) in the plan to ensure "Reality" matches "Target" scope
-    varieties = [row.seed_variety for row in plan.targets]
-    item_filter = ""
+        
+    # Variety Filter
+    item_condition = ""
     if varieties:
-        formatted_varieties = "', '".join(varieties)
-        item_filter = f"AND sii.item_code IN ('{formatted_varieties}')"
-
+        formatted = "', '".join(varieties)
+        item_condition = f"AND sii.item_code IN ('{formatted}')"
+    elif filters.get("seed_variety"):
+         item_condition = f"AND sii.item_code = '{filters.get('seed_variety')}'"
+         
+    # Query
     query = f"""
         SELECT 
             DATE_FORMAT(si.posting_date, '%%b') as month,
@@ -186,17 +237,16 @@ def get_current_actuals(plan):
         JOIN `tabSales Invoice Item` sii ON sii.parent = si.name
         WHERE si.docstatus = 1
             AND si.company = %(company)s
-            AND si.posting_date BETWEEN %(from_date)s AND %(to_date)s
-            {party_filter}
-            {item_filter}
+            AND si.posting_date BETWEEN %(year_start_date)s AND %(year_end_date)s
+            {scope_condition}
+            {item_condition}
         GROUP BY DATE_FORMAT(si.posting_date, '%%b')
     """
     
     results = frappe.db.sql(query, {
-        "company": plan.company,
-        "from_date": plan.from_date,
-        "to_date": plan.to_date,
-        "party": plan.party
+        "company": filters.get("company"),
+        "year_start_date": fy.year_start_date,
+        "year_end_date": fy.year_end_date
     }, as_dict=True)
     
     return {row.month: flt(row.amount) for row in results}
@@ -219,26 +269,45 @@ def get_chart(data):
                     "name": "LY Actuals",
                     "values": ly_data,
                     "chartType": "line",
-                    "color": "gray" # Context
+                    "color": "gray"
                 },
                 {
                     "name": "Stat Forecast (AI)",
                     "values": stat_data,
                     "chartType": "line",
-                    "lineOptions": {"regionFill": 0, "dotSize": 4, "dash": 1}, # Dotted-ish
+                    "lineOptions": {"regionFill": 0, "dotSize": 4, "dash": 1},
                     "color": "orange" 
                 },
                 {
                     "name": "Sales Target (Goal)",
                     "values": target_data,
                     "chartType": "line",
-                    "color": "blue" # Goal
+                    "color": "blue"
                 }
             ]
         },
-        "type": "axis-mixed", # allows mixed charts
-        # "height": 300
+        "type": "axis-mixed"
     }
+
+@frappe.whitelist()
+def get_dashboard_chart(data=None, filters=None):
+    if not filters:
+        filters = {}
+        
+    # Default to current Fiscal Year if not provided
+    if not filters.get("fiscal_year"):
+        current_fy = frappe.db.get_value("Fiscal Year", {"year_start_date": ["<=", frappe.utils.nowdate()], "year_end_date": [">=", frappe.utils.nowdate()]}, "name")
+        if current_fy:
+            filters["fiscal_year"] = current_fy
+            
+    # Default to user's company
+    if not filters.get("company"):
+        filters["company"] = frappe.defaults.get_user_default("Company")
+        
+    data = get_data(filters)
+    chart = get_chart(data)
+    
+    return chart
 
 def get_report_summary(data):
     if not data:

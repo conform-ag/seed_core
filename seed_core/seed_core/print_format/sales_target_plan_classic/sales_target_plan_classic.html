@@ -1,0 +1,83 @@
+<div class="print-format">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <h3>{{ _("Sales Target Plan") }}</h3>
+            <h4>{{ doc.fiscal_year }}</h4>
+        </div>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="row section-break">
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-4 text-muted">{{ _("Party") }}</div>
+                <div class="col-xs-8"><strong>{{ doc.party }}</strong><br><small>{{ doc.party_type }}</small></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 text-muted">{{ _("Target Level") }}</div>
+                <div class="col-xs-8">{{ doc.target_level }}</div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-4 text-muted">{{ _("Period") }}</div>
+                <div class="col-xs-8">{{ doc.from_date }} - {{ doc.to_date }}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 text-muted">{{ _("Status") }}</div>
+                <div class="col-xs-8">{{ doc.status }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Metrics -->
+    <div class="row section-break">
+        <div class="col-xs-6 text-center" style="border-right: 1px solid #ddd;">
+            <p class="text-muted">{{ _("Total Target Qty") }}</p>
+            <h3>{{ doc.get_formatted("total_forecast_qty") }}</h3>
+        </div>
+        <div class="col-xs-6 text-center">
+            <p class="text-muted">{{ _("Total Target Amount") }}</p>
+            <h3>{{ doc.get_formatted("total_forecast_amount") }}</h3>
+        </div>
+    </div>
+
+    <!-- Targets Table -->
+    <div class="row section-break">
+        <div class="col-xs-12">
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">{{ _("Seed Variety") }}</th>
+                        <th style="width: 15%;">{{ _("Crop") }}</th>
+                        <th style="width: 10%;">{{ _("Month") }}</th>
+                        <th style="width: 15%;" class="text-right">{{ _("LY Amount") }}</th>
+                        <th style="width: 15%;" class="text-right">{{ _("Target Qty") }}</th>
+                        <th style="width: 15%;" class="text-right">{{ _("Target Amount") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in doc.targets %}
+                    <tr>
+                        <td>{{ row.seed_variety }}</td>
+                        <td>{{ row.crop or '' }}</td>
+                        <td>{{ row.month }}</td>
+                        <td class="text-right">{{ row.get_formatted("history_amount") }}</td>
+                        <td class="text-right">{{ row.get_formatted("forecast_qty") }}</td>
+                        <td class="text-right"><strong>{{ row.get_formatted("forecast_amount") }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="active">
+                        <td colspan="3"><strong>{{ _("Totals") }}</strong></td>
+                        <td class="text-right"><strong>{{ doc.get_formatted("total_history_amount") }}</strong></td>
+                        <td class="text-right"><strong>{{ doc.get_formatted("total_forecast_qty") }}</strong></td>
+                        <td class="text-right"><strong>{{ doc.get_formatted("total_forecast_amount") }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
