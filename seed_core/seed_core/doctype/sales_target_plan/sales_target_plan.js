@@ -1,28 +1,28 @@
 frappe.ui.form.on('Sales Target Plan', {
-    refresh: function(frm) {
+    refresh: function (frm) {
         // Add button to fetch historical data
         if (!frm.doc.docstatus && frm.doc.party && frm.doc.fiscal_year) {
-            frm.add_custom_button(__('Fetch Historical Data'), function() {
+            frm.add_custom_button(__('Fetch Historical Data'), function () {
                 frm.call('fetch_historical_data').then(() => {
                     frm.refresh_field('targets');
                     frm.dirty();
                 });
             }, __('Actions'));
         }
-        
+
         // Add button for parent company to pull subsidiary forecast
         if (!frm.doc.docstatus && frm.doc.target_level === 'Distributor/Subsidiary') {
-            frm.add_custom_button(__('Pull Subsidiary Forecast'), function() {
+            frm.add_custom_button(__('Pull Subsidiary Forecast'), function () {
                 frappe.call({
                     method: 'seed_core.seed_core.doctype.sales_target_plan.sales_target_plan.get_subsidiary_forecast',
                     args: {
                         subsidiary: frm.doc.party,
                         fiscal_year: frm.doc.fiscal_year
                     },
-                    callback: function(r) {
+                    callback: function (r) {
                         if (r.message && r.message.length) {
                             frm.clear_table('targets');
-                            r.message.forEach(function(row) {
+                            r.message.forEach(function (row) {
                                 let child = frm.add_child('targets');
                                 child.item_code = row.item_code;
                                 child.month = row.month;
@@ -40,24 +40,44 @@ frappe.ui.form.on('Sales Target Plan', {
             }, __('Actions'));
         }
     },
-    
-    party: function(frm) {
+
+    party: function (frm) {
         // Auto-fetch historical data when party is selected
         if (frm.doc.party && frm.doc.fiscal_year && frm.doc.company) {
+
+            // Auto-fetch Price List for Distributor
+            if (frm.doc.target_level === 'Distributor/Subsidiary' && frm.doc.party_type === 'Customer') {
+                frappe.db.get_value('Customer', frm.doc.party, 'default_price_list')
+                    .then(r => {
+                        if (r && r.message && r.message.default_price_list) {
+                            frm.set_value('price_list', r.message.default_price_list);
+                        }
+                    });
+            }
+
             frm.call('fetch_historical_data').then(() => {
                 frm.refresh_field('targets');
             });
         }
     },
-    
-    fiscal_year: function(frm) {
+
+    target_level: function (frm) {
+        if (frm.doc.target_level === 'Country') {
+            frm.set_value('party_type', 'Territory');
+            // User must manually select Price List for Country as per requirement
+        } else {
+            frm.set_value('party_type', 'Customer');
+        }
+    },
+
+    fiscal_year: function (frm) {
         // Auto-fetch when fiscal year changes
         if (frm.doc.party && frm.doc.fiscal_year && frm.doc.company) {
             frm.call('fetch_historical_data').then(() => {
                 frm.refresh_field('targets');
             });
         }
-        
+
         // Auto-set dates from fiscal year
         if (frm.doc.fiscal_year) {
             frappe.db.get_doc('Fiscal Year', frm.doc.fiscal_year).then(fy => {
@@ -68,16 +88,53 @@ frappe.ui.form.on('Sales Target Plan', {
     }
 });
 
-// Child table events for real-time delta calculation
+// Child table events
 frappe.ui.form.on('Sales Target Item', {
-    forecast_qty: function(frm, cdt, cdn) {
+    item_code: function (frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+        if (row.item_code && frm.doc.price_list) {
+            // Fetch Rate from Item Price
+            frappe.call({
+                method: "frappe.client.get_value",
+                args: {
+                    doctype: "Item Price",
+                    filters: {
+                        item_code: row.item_code,
+                        price_list: frm.doc.price_list
+                    },
+                    fieldname: "price_list_rate"
+                },
+                callback: function (r) {
+                    if (r.message) {
+                        frappe.model.set_value(cdt, cdn, 'rate', r.message.price_list_rate);
+                        calculate_row_amount(frm, cdt, cdn);
+                    }
+                }
+            });
+        }
+    },
+
+    forecast_qty: function (frm, cdt, cdn) {
+        calculate_row_amount(frm, cdt, cdn);
         calculate_row_delta(frm, cdt, cdn);
     },
-    
-    forecast_amount: function(frm, cdt, cdn) {
+
+    rate: function (frm, cdt, cdn) {
+        calculate_row_amount(frm, cdt, cdn);
+    },
+
+    forecast_amount: function (frm, cdt, cdn) {
         calculate_totals(frm);
     }
 });
+
+function calculate_row_amount(frm, cdt, cdn) {
+    let row = locals[cdt][cdn];
+    if (row.forecast_qty && row.rate) {
+        frappe.model.set_value(cdt, cdn, 'forecast_amount', row.forecast_qty * row.rate);
+    }
+    calculate_totals(frm); // Calculate totals after amount update
+}
 
 function calculate_row_delta(frm, cdt, cdn) {
     let row = locals[cdt][cdn];
@@ -87,7 +144,6 @@ function calculate_row_delta(frm, cdt, cdn) {
         row.delta_percent = row.forecast_qty > 0 ? 100 : 0;
     }
     frm.refresh_field('targets');
-    calculate_totals(frm);
 }
 
 function calculate_totals(frm) {
@@ -95,14 +151,14 @@ function calculate_totals(frm) {
     let total_history_amount = 0;
     let total_forecast_qty = 0;
     let total_forecast_amount = 0;
-    
+
     frm.doc.targets.forEach(row => {
         total_history_qty += flt(row.history_qty);
         total_history_amount += flt(row.history_amount);
         total_forecast_qty += flt(row.forecast_qty);
         total_forecast_amount += flt(row.forecast_amount);
     });
-    
+
     frm.set_value('total_history_qty', total_history_qty);
     frm.set_value('total_history_amount', total_history_amount);
     frm.set_value('total_forecast_qty', total_forecast_qty);

@@ -96,7 +96,14 @@ class SalesTargetPlan(Document):
         elif self.party_type == "Customer Group":
             party_filter = "AND si.customer IN (SELECT name FROM `tabCustomer` WHERE customer_group = %(party)s)"
         elif self.party_type == "Territory":
-            party_filter = "AND si.territory = %(party)s"
+            # Handle hierarchy using Nested Sets
+            territory_lft, territory_rgt = frappe.db.get_value("Territory", self.party, ["lft", "rgt"])
+            party_filter = f"""
+                AND si.territory IN (
+                    SELECT name FROM `tabTerritory`
+                    WHERE lft >= {territory_lft} AND rgt <= {territory_rgt}
+                )
+            """
         
         query = f"""
             SELECT 

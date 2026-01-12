@@ -9,6 +9,7 @@
         "naming_series",
         "fiscal_year",
         "company",
+        "price_list",
         "column_break_main",
         "target_level",
         "party_type",
@@ -52,16 +53,24 @@
             "reqd": 1
         },
         {
+            "fieldname": "price_list",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Price List",
+            "options": "Price List",
+            "reqd": 0
+        },
+        {
             "fieldname": "column_break_main",
             "fieldtype": "Column Break"
         },
         {
-            "default": "End Customer",
+            "default": "Distributor/Subsidiary",
             "fieldname": "target_level",
             "fieldtype": "Select",
             "in_list_view": 1,
             "label": "Target Level",
-            "options": "End Customer\nDistributor/Subsidiary",
+            "options": "Distributor/Subsidiary\nCountry",
             "reqd": 1
         },
         {

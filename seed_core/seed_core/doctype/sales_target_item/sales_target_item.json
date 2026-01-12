@@ -12,6 +12,7 @@
         "history_qty",
         "history_amount",
         "column_break_forecast",
+        "rate",
         "forecast_qty",
         "forecast_amount",
         "delta_percent"
@@ -62,6 +63,13 @@
             "fieldtype": "Column Break"
         },
         {
+            "fieldname": "rate",
+            "fieldtype": "Currency",
+            "in_list_view": 1,
+            "label": "Rate",
+            "read_only": 1
+        },
+        {
             "fieldname": "forecast_qty",
             "fieldtype": "Float",
             "in_list_view": 1,
@@ -72,7 +80,8 @@
             "fieldname": "forecast_amount",
             "fieldtype": "Currency",
             "in_list_view": 1,
-            "label": "Target Amount"
+            "label": "Target Amount",
+            "read_only": 1
         },
         {
             "fieldname": "delta_percent",
