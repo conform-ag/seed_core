@@ -1,136 +1,132 @@
 {
-    "charts": [
-        {
-            "chart_name": "Target vs Reality Overview",
-            "label": "Target vs Reality Overview"
-        },
-        {
-            "chart_name": "Seed Sales Dashboard",
-            "label": "Sales Overview"
-        }
-    ],
-    "content": "[{\"type\":\"header\",\"data\":{\"text\":\"Performance Overview\",\"level\":3}},{\"type\":\"number_card\",\"data\":{\"card_name\":\"Total Seed Varieties\",\"col\":4}},{\"type\":\"number_card\",\"data\":{\"card_name\":\"Total Distributors\",\"col\":4}},{\"type\":\"chart\",\"data\":{\"chart_name\":\"Target vs Reality Overview\",\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"Seed Management\",\"level\":3}},{\"type\":\"card\",\"data\":{\"card_name\":\"Seed Master Data\",\"col\":4,\"color\":\"Green\"}},{\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4,\"color\":\"Blue\"}},{\"type\":\"card\",\"data\":{\"card_name\":\"Traceability\",\"col\":4,\"color\":\"Orange\"}}]",
-    "number_cards": [
-        {
-            "label": "Total Seed Varieties",
-            "name": "Total Seed Varieties"
-        },
-        {
-            "label": "Total Distributors",
-            "name": "Total Distributors"
-        }
-    ],
+    "charts": [],
+    "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Seed Management</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Seed Variety\",\"col\":4}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":4}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Target Plan\",\"col\":4}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Target vs Reality\",\"col\":4}}]",
     "creation": "2024-01-01 10:00:00.000000",
     "docstatus": 0,
     "doctype": "Workspace",
+    "for_user": "",
+    "hide_custom": 0,
+    "icon": "seed",
     "idx": 0,
+    "is_hidden": 0,
     "is_standard": 1,
     "label": "Seed Core",
     "links": [
         {
+            "hidden": 0,
+            "is_query_report": 0,
             "label": "Seed Variety",
             "link_count": 0,
             "link_to": "Seed Variety",
             "link_type": "DocType",
             "onboard": 1,
+            "only_for": "",
             "type": "Link"
         },
         {
+            "hidden": 0,
+            "is_query_report": 0,
             "label": "Customer",
             "link_count": 0,
             "link_to": "Customer",
             "link_type": "DocType",
             "onboard": 1,
+            "only_for": "",
             "type": "Link"
         },
         {
+            "hidden": 0,
+            "is_query_report": 0,
             "label": "Seed Crop",
             "link_count": 0,
             "link_to": "Seed Crop",
             "link_type": "DocType",
             "onboard": 0,
+            "only_for": "",
             "type": "Link"
         },
         {
+            "hidden": 0,
+            "is_query_report": 0,
             "label": "Seed Segment",
             "link_count": 0,
             "link_to": "Seed Segment",
             "link_type": "DocType",
             "onboard": 0,
+            "only_for": "",
             "type": "Link"
         },
         {
-            "label": "Seed Processing",
-            "link_count": 0,
-            "link_to": "Seed Processing",
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Link"
-        },
-        {
-            "label": "Batch",
-            "link_count": 0,
-            "link_to": "Batch",
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Link"
-        },
-        {
-            "label": "Lab Test",
-            "link_count": 0,
-            "link_to": "Lab Test",
-            "link_type": "DocType",
-            "onboard": 0,
-            "type": "Link"
-        },
-        {
-            "label": "Seed Stock Balance",
-            "link_count": 0,
-            "link_to": "Seed Stock Balance",
-            "link_type": "Report",
-            "onboard": 0,
-            "type": "Link"
-        },
-        {
+            "hidden": 0,
+            "is_query_report": 0,
             "label": "Sales Target Plan",
             "link_count": 0,
             "link_to": "Sales Target Plan",
             "link_type": "DocType",
             "onboard": 1,
+            "only_for": "",
             "type": "Link"
         },
         {
-            "label": "Reports",
+            "hidden": 0,
+            "is_query_report": 1,
+            "label": "Sales Target vs Reality",
             "link_count": 0,
-            "link_type": "DocType",
+            "link_to": "Sales Target vs Reality",
+            "link_type": "Report",
             "onboard": 0,
-            "type": "Link",
-            "link_to": "Report"
+            "only_for": "",
+            "type": "Link"
         }
     ],
-    "modified": "2024-01-09 14:10:00.000000",
+    "modified": "2024-01-12 13:30:00.000000",
     "modified_by": "Administrator",
     "module": "Seed Core",
     "name": "Seed Core",
+    "number_cards": [],
     "owner": "Administrator",
+    "parent_page": "",
     "public": 1,
-    "roles": [
+    "restrict_to_domain": "",
+    "roles": [],
+    "sequence_id": 1,
+    "shortcuts": [
         {
-            "role": "System Manager"
+            "color": "Green",
+            "doc_view": "List",
+            "label": "Seed Variety",
+            "link_to": "Seed Variety",
+            "restrict_to_domain": "",
+            "stats_filter": "",
+            "type": "DocType"
         },
         {
-            "role": "Stock Manager"
+            "color": "Blue",
+            "doc_view": "List",
+            "label": "Customer",
+            "link_to": "Customer",
+            "restrict_to_domain": "",
+            "stats_filter": "",
+            "type": "DocType"
         },
         {
-            "role": "Stock User"
+            "color": "Orange",
+            "doc_view": "List",
+            "label": "Sales Target Plan",
+            "link_to": "Sales Target Plan",
+            "restrict_to_domain": "",
+            "stats_filter": "",
+            "type": "DocType"
         },
         {
-            "role": "Sales User"
-        },
-        {
-            "role": "Sales Manager"
+            "color": "Grey",
+            "doc_view": "",
+            "label": "Sales Target vs Reality",
+            "link_to": "Sales Target vs Reality",
+            "restrict_to_domain": "",
+            "stats_filter": "",
+            "type": "Report"
         }
     ],
-    "sequence_id": 1,
     "title": "Seed Core"
 }
