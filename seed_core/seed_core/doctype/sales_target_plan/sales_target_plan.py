@@ -59,16 +59,8 @@ class SalesTargetPlan(Document):
             })
         
         if not historical_data:
-            # If no history, add empty rows for each month
-            months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-            for month in months:
-                self.append("targets", {
-                    "month": month,
-                    "history_qty": 0,
-                    "history_amount": 0,
-                    "forecast_qty": 0,
-                    "forecast_amount": 0
-                })
+            frappe.msgprint("No historical sales data found for previous year. Add targets manually.", indicator="yellow", alert=True)
+            return
         
         frappe.msgprint(f"Loaded {len(historical_data)} historical records from {prev_year}", indicator="green", alert=True)
 

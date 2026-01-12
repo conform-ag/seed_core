@@ -1,0 +1,23 @@
+{
+    "creation": "2024-01-12 15:00:00.000000",
+    "docstatus": 0,
+    "doctype": "Print Format",
+    "disabled": 0,
+    "format_data": null,
+    "html": "",
+    "idx": 0,
+    "line_breaks": 0,
+    "modified": "2024-01-12 15:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Seed Core",
+    "name": "Sales Target vs Reality Print",
+    "owner": "Administrator",
+    "print_format_builder": 0,
+    "print_format_builder_beta": 0,
+    "print_format_type": "Jinja",
+    "doc_type": "Sales Target Plan",
+    "raw_printing": 0,
+    "show_section_headings": 0,
+    "standard": "Yes",
+    "custom_format": 1
+}

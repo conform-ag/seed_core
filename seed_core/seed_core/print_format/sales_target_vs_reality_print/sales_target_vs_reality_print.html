@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Sales Target vs Reality</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 20px;
+            color: #333;
+            font-size: 10px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 8px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 15px;
+            font-size: 10px;
+        }
+
+        .info-item {}
+
+        .info-label {
+            color: #666;
+        }
+
+        .info-value {
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 4px 3px;
+            text-align: right;
+        }
+
+        th {
+            background: #333;
+            color: white;
+            font-weight: 600;
+        }
+
+        td:first-child,
+        td:nth-child(2),
+        td:nth-child(3),
+        th:first-child,
+        th:nth-child(2),
+        th:nth-child(3) {
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .totals {
+            margin-top: 15px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .total-item {
+            text-align: center;
+            padding: 8px 15px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+
+        .total-value {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .total-label {
+            font-size: 9px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Sales Target Plan</h1>
+        <div>{{ doc.name }}</div>
+    </div>
+
+    <div class="info-row">
+        <div class="info-item">
+            <span class="info-label">Company:</span>
+            <span class="info-value">{{ doc.company }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Fiscal Year:</span>
+            <span class="info-value">{{ doc.fiscal_year }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Party:</span>
+            <span class="info-value">{{ doc.party }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Status:</span>
+            <span class="info-value">{% if doc.docstatus == 0 %}Draft{% elif doc.docstatus == 1 %}Submitted{% else
+                %}Cancelled{% endif %}</span>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Crop</th>
+                <th>Seed Variety</th>
+                <th>Month</th>
+                <th>Target Qty</th>
+                <th>Target Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in doc.targets %}
+            <tr>
+                <td>{{ row.crop or "" }}</td>
+                <td>{{ row.seed_variety or "" }}</td>
+                <td>{{ row.month }}</td>
+                <td>{{ frappe.format_value(row.forecast_qty, {"fieldtype": "Float"}) }}</td>
+                <td>{{ frappe.format_value(row.forecast_amount, {"fieldtype": "Currency"}) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="totals">
+        <div class="total-item">
+            <div class="total-value">{{ frappe.format_value(doc.total_forecast_qty, {"fieldtype": "Float"}) }}</div>
+            <div class="total-label">Total Target Qty</div>
+        </div>
+        <div class="total-item">
+            <div class="total-value">{{ frappe.format_value(doc.total_forecast_amount, {"fieldtype": "Currency"}) }}
+            </div>
+            <div class="total-label">Total Target Amount</div>
+        </div>
+    </div>
+</body>
+
+</html>
