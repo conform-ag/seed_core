@@ -1,46 +1,38 @@
-{% set data = filters.get("data") or [] %}
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
-    <title>Sales Target vs Reality Report</title>
+    <title>Sales Target vs Reality</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 20px;
             color: #333;
+            font-size: 11px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border-bottom: 2px solid #333;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 24px;
-        }
-
-        .header .subtitle {
-            color: #666;
-            font-size: 14px;
-            margin-top: 5px;
+            font-size: 18px;
         }
 
         .filters {
             display: flex;
-            gap: 30px;
-            margin-bottom: 20px;
-            padding: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 8px;
             background: #f5f5f5;
             border-radius: 4px;
-        }
-
-        .filter-item {
-            font-size: 12px;
+            font-size: 10px;
         }
 
         .filter-label {
@@ -54,13 +46,13 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            font-size: 10px;
         }
 
         th,
         td {
-            border: 1px solid #ddd;
-            padding: 10px 8px;
+            border: 1px solid #ccc;
+            padding: 6px 4px;
             text-align: right;
         }
 
@@ -68,38 +60,39 @@
             background: #333;
             color: white;
             font-weight: 600;
+            font-size: 9px;
         }
 
         td:first-child,
         th:first-child {
-            text-align: left;
+            text-align: center;
         }
 
         tr:nth-child(even) {
             background: #f9f9f9;
         }
 
-        .status-aggressive {
+        .above {
             color: #28a745;
             font-weight: bold;
         }
 
-        .status-conservative {
+        .below {
             color: #dc3545;
             font-weight: bold;
         }
 
-        .status-aligned {
+        .on {
             color: #666;
         }
 
         .summary {
             display: flex;
             justify-content: space-around;
-            margin: 30px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
+            margin-top: 15px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
         }
 
         .summary-item {
@@ -107,20 +100,19 @@
         }
 
         .summary-value {
-            font-size: 24px;
+            font-size: 14px;
             font-weight: bold;
         }
 
         .summary-label {
+            font-size: 9px;
             color: #666;
-            font-size: 12px;
-            margin-top: 5px;
         }
 
         .footer {
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: center;
-            font-size: 10px;
+            font-size: 9px;
             color: #999;
         }
     </style>
@@ -129,45 +121,33 @@
 <body>
     <div class="header">
         <h1>Sales Target vs Reality</h1>
-        <div class="subtitle">Performance Analysis Report</div>
     </div>
 
     <div class="filters">
-        {% if filters.company %}
-        <div class="filter-item">
-            <span class="filter-label">Company:</span>
-            <span class="filter-value">{{ filters.company }}</span>
-        </div>
-        {% endif %}
-        {% if filters.fiscal_year %}
-        <div class="filter-item">
-            <span class="filter-label">Fiscal Year:</span>
-            <span class="filter-value">{{ filters.fiscal_year }}</span>
-        </div>
-        {% endif %}
-        {% if filters.customer %}
-        <div class="filter-item">
-            <span class="filter-label">Distributor:</span>
-            <span class="filter-value">{{ filters.customer }}</span>
-        </div>
-        {% endif %}
-        {% if filters.crop %}
-        <div class="filter-item">
-            <span class="filter-label">Crop:</span>
-            <span class="filter-value">{{ filters.crop }}</span>
-        </div>
-        {% endif %}
+        {% if filters.company %}<span><span class="filter-label">Company:</span> <span class="filter-value">{{
+                filters.company }}</span></span>{% endif %}
+        {% if filters.fiscal_year %}<span><span class="filter-label">FY:</span> <span class="filter-value">{{
+                filters.fiscal_year }}</span></span>{% endif %}
+        {% if filters.customer %}<span><span class="filter-label">Distributor:</span> <span class="filter-value">{{
+                filters.customer }}</span></span>{% endif %}
+        {% if filters.crop %}<span><span class="filter-label">Crop:</span> <span class="filter-value">{{ filters.crop
+                }}</span></span>{% endif %}
+        {% if filters.seed_variety %}<span><span class="filter-label">Variety:</span> <span class="filter-value">{{
+                filters.seed_variety }}</span></span>{% endif %}
     </div>
 
     <table>
         <thead>
             <tr>
                 <th>Month</th>
-                <th>LY Actuals</th>
-                <th>AI Forecast</th>
-                <th>Sales Target</th>
-                <th>Actual Sales</th>
-                <th>Variance</th>
+                <th>LY Qty</th>
+                <th>LY Amount</th>
+                <th>Target Qty</th>
+                <th>Target Amount</th>
+                <th>Actual Qty</th>
+                <th>Actual Amount</th>
+                <th>Var Qty</th>
+                <th>Var Amount</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -175,22 +155,24 @@
             {% for row in data %}
             <tr>
                 <td>{{ row.month }}</td>
-                <td>{{ frappe.utils.fmt_money(row.ly_actual) }}</td>
-                <td>{{ frappe.utils.fmt_money(row.stat_forecast) }}</td>
-                <td>{{ frappe.utils.fmt_money(row.sales_target) }}</td>
-                <td>{{ frappe.utils.fmt_money(row.actual_sales) }}</td>
-                <td>{{ frappe.utils.fmt_money(row.variance) }}</td>
+                <td>{{ frappe.utils.fmt_money(row.ly_qty, 0) if row.ly_qty else "-" }}</td>
+                <td>{{ frappe.utils.fmt_money(row.ly_amount) if row.ly_amount else "-" }}</td>
+                <td>{{ frappe.utils.fmt_money(row.target_qty, 0) if row.target_qty else "-" }}</td>
+                <td>{{ frappe.utils.fmt_money(row.target_amount) if row.target_amount else "-" }}</td>
+                <td>{{ frappe.utils.fmt_money(row.actual_qty, 0) if row.actual_qty else "-" }}</td>
+                <td>{{ frappe.utils.fmt_money(row.actual_amount) if row.actual_amount else "-" }}</td>
+                <td>{{ frappe.utils.fmt_money(row.variance_qty, 0) if row.variance_qty else "-" }}</td>
+                <td>{{ frappe.utils.fmt_money(row.variance_amount) if row.variance_amount else "-" }}</td>
                 <td
-                    class="{% if 'Aggressive' in row.status %}status-aggressive{% elif 'Conservative' in row.status %}status-conservative{% else %}status-aligned{% endif %}">
-                    {{ row.status }}
-                </td>
+                    class="{% if 'Above' in row.status %}above{% elif 'Below' in row.status %}below{% else %}on{% endif %}">
+                    {{ row.status }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
     <div class="footer">
-        Generated on {{ frappe.utils.now() }} | Seed Core
+        Generated {{ frappe.utils.now() }}
     </div>
 </body>
 

@@ -20,43 +20,61 @@ def get_columns():
             "fieldname": "month",
             "label": _("Month"),
             "fieldtype": "Data",
+            "width": 80
+        },
+        {
+            "fieldname": "ly_qty",
+            "label": _("LY Qty"),
+            "fieldtype": "Float",
+            "width": 90
+        },
+        {
+            "fieldname": "ly_amount",
+            "label": _("LY Amount"),
+            "fieldtype": "Currency",
+            "width": 110
+        },
+        {
+            "fieldname": "target_qty",
+            "label": _("Target Qty"),
+            "fieldtype": "Float",
+            "width": 90
+        },
+        {
+            "fieldname": "target_amount",
+            "label": _("Target Amount"),
+            "fieldtype": "Currency",
+            "width": 110
+        },
+        {
+            "fieldname": "actual_qty",
+            "label": _("Actual Qty"),
+            "fieldtype": "Float",
+            "width": 90
+        },
+        {
+            "fieldname": "actual_amount",
+            "label": _("Actual Amount"),
+            "fieldtype": "Currency",
+            "width": 110
+        },
+        {
+            "fieldname": "variance_qty",
+            "label": _("Var Qty"),
+            "fieldtype": "Float",
+            "width": 80
+        },
+        {
+            "fieldname": "variance_amount",
+            "label": _("Var Amount"),
+            "fieldtype": "Currency",
             "width": 100
-        },
-        {
-            "fieldname": "ly_actual",
-            "label": _("LY Actuals"),
-            "fieldtype": "Currency",
-            "width": 120
-        },
-        {
-            "fieldname": "stat_forecast",
-            "label": _("Stat Forecast (AI)"),
-            "fieldtype": "Currency",
-            "width": 120
-        },
-        {
-            "fieldname": "sales_target",
-            "label": _("Sales Target (Goal)"),
-            "fieldtype": "Currency",
-            "width": 120
-        },
-        {
-            "fieldname": "actual_sales",
-            "label": _("Actual Sales (Current)"),
-            "fieldtype": "Currency",
-            "width": 120
-        },
-        {
-            "fieldname": "variance",
-            "label": _("Variance (Goal vs AI)"),
-            "fieldtype": "Currency",
-            "width": 120
         },
         {
             "fieldname": "status",
             "label": _("Status"),
             "fieldtype": "Data",
-            "width": 150
+            "width": 100
         }
     ]
 
@@ -67,58 +85,62 @@ def get_data(filters):
     if not plans:
         return []
 
-    # 2. Initialize Aggregators
-    history_map = {}
-    target_map = {}
+    # 2. Initialize Aggregators (qty and amount)
+    history_qty_map = {}
+    history_amount_map = {}
+    target_qty_map = {}
+    target_amount_map = {}
     total_varieties = set()
     
     # 3. Aggregate Data from Plans
     for plan in plans:
-        # Apply Plan Level Party Filters if necessary 
-        # (Though get_plans handles this, we might have multiple plans)
-        
-        # Filter Rows (Crop/Variety)
         plan_rows = filter_plan_rows(plan, filters)
         
         for row in plan_rows:
             month = row.month
-            history_map[month] = history_map.get(month, 0) + flt(row.history_amount)
-            target_map[month] = target_map.get(month, 0) + flt(row.forecast_amount)
+            history_qty_map[month] = history_qty_map.get(month, 0) + flt(row.history_qty)
+            history_amount_map[month] = history_amount_map.get(month, 0) + flt(row.history_amount)
+            target_qty_map[month] = target_qty_map.get(month, 0) + flt(row.forecast_qty)
+            target_amount_map[month] = target_amount_map.get(month, 0) + flt(row.forecast_amount)
             if row.seed_variety:
                 total_varieties.add(row.seed_variety)
 
-    # 4. Calculate Stat Forecast (AI) based on Aggregated History
-    stat_forecast_map = calculate_exponential_smoothing(history_map)
+    # 4. Get Current Actuals (Reality) - Filtered by relevant Varieties & Scope
+    actual_qty_map, actual_amount_map = get_aggregated_actuals(filters, total_varieties)
     
-    # 5. Get Current Actuals (Reality) - Filtered by relevant Varieties & Scope
-    current_actuals_map = get_aggregated_actuals(filters, total_varieties)
-    
-    # 6. Build Final Data Rows
+    # 5. Build Final Data Rows
     data = []
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     
     for month in months:
-        ly = history_map.get(month, 0)
-        stat = stat_forecast_map.get(month, 0)
-        target = target_map.get(month, 0)
-        actual = current_actuals_map.get(month, 0)
-        variance = target - stat
+        ly_qty = history_qty_map.get(month, 0)
+        ly_amount = history_amount_map.get(month, 0)
+        target_qty = target_qty_map.get(month, 0)
+        target_amount = target_amount_map.get(month, 0)
+        actual_qty = actual_qty_map.get(month, 0)
+        actual_amount = actual_amount_map.get(month, 0)
+        
+        variance_qty = actual_qty - target_qty
+        variance_amount = actual_amount - target_amount
         
         status = ""
-        if variance > 0:
-            status = "Aggressive (+)"
-        elif variance < 0:
-             status = "Conservative (-)"
+        if variance_amount > 0:
+            status = "Above Target"
+        elif variance_amount < 0:
+            status = "Below Target"
         else:
-            status = "Aligned"
+            status = "On Target"
 
         row = {
             "month": month,
-            "ly_actual": ly,
-            "stat_forecast": stat,
-            "sales_target": target,
-            "actual_sales": actual,
-            "variance": variance,
+            "ly_qty": ly_qty,
+            "ly_amount": ly_amount,
+            "target_qty": target_qty,
+            "target_amount": target_amount,
+            "actual_qty": actual_qty,
+            "actual_amount": actual_amount,
+            "variance_qty": variance_qty,
+            "variance_amount": variance_amount,
             "status": status
         }
         data.append(row)
@@ -235,6 +257,7 @@ def get_aggregated_actuals(filters, varieties):
     query = f"""
         SELECT 
             DATE_FORMAT(si.posting_date, '%%b') as month,
+            SUM(sii.qty) as qty,
             SUM(sii.amount) as amount
         FROM `tabSales Invoice` si
         JOIN `tabSales Invoice Item` sii ON sii.parent = si.name
@@ -252,7 +275,10 @@ def get_aggregated_actuals(filters, varieties):
         "year_end_date": fy.year_end_date
     }, as_dict=True)
     
-    return {row.month: flt(row.amount) for row in results}
+    qty_map = {row.month: flt(row.qty) for row in results}
+    amount_map = {row.month: flt(row.amount) for row in results}
+    
+    return qty_map, amount_map
 
 def get_chart(data):
     if not data:
@@ -260,32 +286,31 @@ def get_chart(data):
         
     labels = [row.get("month") for row in data]
     
-    ly_data = [row.get("ly_actual") for row in data]
-    stat_data = [row.get("stat_forecast") for row in data]
-    target_data = [row.get("sales_target") for row in data]
+    ly_data = [row.get("ly_amount") for row in data]
+    target_data = [row.get("target_amount") for row in data]
+    actual_data = [row.get("actual_amount") for row in data]
     
     return {
         "data": {
             "labels": labels,
             "datasets": [
                 {
-                    "name": "LY Actuals",
+                    "name": "LY Amount",
                     "values": ly_data,
                     "chartType": "line",
                     "color": "gray"
                 },
                 {
-                    "name": "Stat Forecast (AI)",
-                    "values": stat_data,
-                    "chartType": "line",
-                    "lineOptions": {"regionFill": 0, "dotSize": 4, "dash": 1},
-                    "color": "orange" 
-                },
-                {
-                    "name": "Sales Target (Goal)",
+                    "name": "Target Amount",
                     "values": target_data,
                     "chartType": "line",
                     "color": "blue"
+                },
+                {
+                    "name": "Actual Amount",
+                    "values": actual_data,
+                    "chartType": "bar",
+                    "color": "green"
                 }
             ]
         },
@@ -316,27 +341,38 @@ def get_report_summary(data):
     if not data:
         return []
         
-    total_target = sum(row.get("sales_target") for row in data)
-    total_forecast = sum(row.get("stat_forecast") for row in data)
+    total_target_qty = sum(row.get("target_qty", 0) for row in data)
+    total_target_amount = sum(row.get("target_amount", 0) for row in data)
+    total_actual_qty = sum(row.get("actual_qty", 0) for row in data)
+    total_actual_amount = sum(row.get("actual_amount", 0) for row in data)
     
-    variance = total_target - total_forecast
-    label = "Aggressive" if variance > 0 else "Conservative"
+    variance_amount = total_actual_amount - total_target_amount
     
     return [
         {
-            "value": total_target,
-            "label": "Total Target",
+            "value": total_target_qty,
+            "label": "Target Qty",
+            "datatype": "Float",
+        },
+        {
+            "value": total_target_amount,
+            "label": "Target Amount",
             "datatype": "Currency",
         },
         {
-            "value": total_forecast,
-            "label": "AI Forecast",
+            "value": total_actual_qty,
+            "label": "Actual Qty",
+            "datatype": "Float",
+        },
+        {
+            "value": total_actual_amount,
+            "label": "Actual Amount",
             "datatype": "Currency",
         },
         {
-            "value": variance,
-            "label": f"Variance ({label})",
+            "value": variance_amount,
+            "label": "Variance",
             "datatype": "Currency",
-            "indicator": "Green" if variance > 0 else "Red"
+            "indicator": "Green" if variance_amount >= 0 else "Red"
         }
     ]
