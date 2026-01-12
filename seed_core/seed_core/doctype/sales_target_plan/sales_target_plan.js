@@ -90,6 +90,12 @@ frappe.ui.form.on('Sales Target Plan', {
 
 // Child table events
 frappe.ui.form.on('Sales Target Item', {
+    crop: function (frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+        // Clear seed_variety when crop changes
+        frappe.model.set_value(cdt, cdn, 'seed_variety', '');
+    },
+
     seed_variety: function (frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.seed_variety) {
@@ -115,14 +121,31 @@ frappe.ui.form.on('Sales Target Item', {
                 });
             }
 
-            // 2. Fetch Crop from Seed Variety
-            frappe.db.get_value('Seed Variety', row.seed_variety, 'crop')
-                .then(r => {
-                    if (r && r.message && r.message.crop) {
-                        frappe.model.set_value(cdt, cdn, 'crop', r.message.crop);
-                    }
-                });
+            // 2. Fetch Crop from Seed Variety if not already set
+            if (!row.crop) {
+                frappe.db.get_value('Seed Variety', row.seed_variety, 'crop')
+                    .then(r => {
+                        if (r && r.message && r.message.crop) {
+                            frappe.model.set_value(cdt, cdn, 'crop', r.message.crop);
+                        }
+                    });
+            }
         }
+    },
+
+    form_render: function (frm, cdt, cdn) {
+        // Set query on seed_variety to filter by crop
+        frm.fields_dict.targets.grid.get_field('seed_variety').get_query = function (doc, cdt, cdn) {
+            let row = locals[cdt][cdn];
+            if (row.crop) {
+                return {
+                    filters: {
+                        'crop': row.crop
+                    }
+                };
+            }
+            return {};
+        };
     },
 
     forecast_qty: function (frm, cdt, cdn) {

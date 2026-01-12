@@ -5,16 +5,15 @@
     "editable_grid": 1,
     "engine": "InnoDB",
     "field_order": [
-        "seed_variety",
         "crop",
+        "seed_variety",
         "month",
+        "forecast_qty",
+        "rate",
+        "forecast_amount",
         "column_break_history",
         "history_qty",
         "history_amount",
-        "column_break_forecast",
-        "rate",
-        "forecast_qty",
-        "forecast_amount",
         "delta_percent"
     ],
     "fields": [
@@ -48,7 +47,7 @@
         {
             "fieldname": "history_qty",
             "fieldtype": "Float",
-            "in_list_view": 1,
+            "in_list_view": 0,
             "label": "LY Qty",
             "read_only": 1
         },
@@ -65,7 +64,7 @@
         {
             "fieldname": "rate",
             "fieldtype": "Currency",
-            "in_list_view": 1,
+            "in_list_view": 0,
             "label": "Rate",
             "read_only": 0
         },
@@ -79,14 +78,14 @@
         {
             "fieldname": "forecast_amount",
             "fieldtype": "Currency",
-            "in_list_view": 1,
+            "in_list_view": 0,
             "label": "Target Amount",
             "read_only": 1
         },
         {
             "fieldname": "delta_percent",
             "fieldtype": "Percent",
-            "in_list_view": 1,
+            "in_list_view": 0,
             "label": "Delta %",
             "read_only": 1
         }
