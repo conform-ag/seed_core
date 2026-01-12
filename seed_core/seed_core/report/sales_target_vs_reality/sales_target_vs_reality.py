@@ -17,22 +17,30 @@ def execute(filters=None):
 def get_columns():
     return [
         {
+            "fieldname": "crop",
+            "label": _("Crop"),
+            "fieldtype": "Link",
+            "options": "Seed Crop",
+            "width": 100
+        },
+        {
+            "fieldname": "seed_variety",
+            "label": _("Variety"),
+            "fieldtype": "Link",
+            "options": "Seed Variety",
+            "width": 120
+        },
+        {
+            "fieldname": "party",
+            "label": _("Party"),
+            "fieldtype": "Data",
+            "width": 150
+        },
+        {
             "fieldname": "month",
             "label": _("Month"),
             "fieldtype": "Data",
-            "width": 80
-        },
-        {
-            "fieldname": "ly_qty",
-            "label": _("LY Qty"),
-            "fieldtype": "Float",
-            "width": 90
-        },
-        {
-            "fieldname": "ly_amount",
-            "label": _("LY Amount"),
-            "fieldtype": "Currency",
-            "width": 110
+            "width": 60
         },
         {
             "fieldname": "target_qty",
@@ -42,9 +50,9 @@ def get_columns():
         },
         {
             "fieldname": "target_amount",
-            "label": _("Target Amount"),
+            "label": _("Target Amt"),
             "fieldtype": "Currency",
-            "width": 110
+            "width": 100
         },
         {
             "fieldname": "actual_qty",
@@ -54,9 +62,9 @@ def get_columns():
         },
         {
             "fieldname": "actual_amount",
-            "label": _("Actual Amount"),
+            "label": _("Actual Amt"),
             "fieldtype": "Currency",
-            "width": 110
+            "width": 100
         },
         {
             "fieldname": "variance_qty",
@@ -65,16 +73,16 @@ def get_columns():
             "width": 80
         },
         {
-            "fieldname": "variance_amount",
-            "label": _("Var Amount"),
-            "fieldtype": "Currency",
-            "width": 100
+            "fieldname": "variance_pct",
+            "label": _("Var %"),
+            "fieldtype": "Percent",
+            "width": 70
         },
         {
             "fieldname": "status",
             "label": _("Status"),
             "fieldtype": "Data",
-            "width": 100
+            "width": 90
         }
     ]
 
@@ -85,65 +93,60 @@ def get_data(filters):
     if not plans:
         return []
 
-    # 2. Initialize Aggregators (qty and amount)
-    history_qty_map = {}
-    history_amount_map = {}
-    target_qty_map = {}
-    target_amount_map = {}
-    total_varieties = set()
+    # 2. Build detailed data rows (one per variety/party/month)
+    data = []
+    all_rows = []  # Collect all plan rows with party info
     
-    # 3. Aggregate Data from Plans
     for plan in plans:
         plan_rows = filter_plan_rows(plan, filters)
-        
         for row in plan_rows:
-            month = row.month
-            history_qty_map[month] = history_qty_map.get(month, 0) + flt(row.history_qty)
-            history_amount_map[month] = history_amount_map.get(month, 0) + flt(row.history_amount)
-            target_qty_map[month] = target_qty_map.get(month, 0) + flt(row.forecast_qty)
-            target_amount_map[month] = target_amount_map.get(month, 0) + flt(row.forecast_amount)
-            if row.seed_variety:
-                total_varieties.add(row.seed_variety)
-
-    # 4. Get Current Actuals (Reality) - Filtered by relevant Varieties & Scope
-    actual_qty_map, actual_amount_map = get_aggregated_actuals(filters, total_varieties)
+            all_rows.append({
+                "crop": row.crop,
+                "seed_variety": row.seed_variety,
+                "party": plan.party,
+                "month": row.month,
+                "target_qty": flt(row.forecast_qty),
+                "target_amount": flt(row.forecast_amount),
+            })
     
-    # 5. Build Final Data Rows
-    data = []
-    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    # 3. Get actuals by variety/month
+    actual_map = get_detailed_actuals(filters, plans)
     
-    for month in months:
-        ly_qty = history_qty_map.get(month, 0)
-        ly_amount = history_amount_map.get(month, 0)
-        target_qty = target_qty_map.get(month, 0)
-        target_amount = target_amount_map.get(month, 0)
-        actual_qty = actual_qty_map.get(month, 0)
-        actual_amount = actual_amount_map.get(month, 0)
+    # 4. Build final data with actuals
+    for row in all_rows:
+        key = (row["seed_variety"], row["month"])
+        actual_qty = actual_map.get(key, {}).get("qty", 0)
+        actual_amount = actual_map.get(key, {}).get("amount", 0)
         
-        variance_qty = actual_qty - target_qty
-        variance_amount = actual_amount - target_amount
+        variance_qty = actual_qty - row["target_qty"]
+        variance_pct = (variance_qty / row["target_qty"] * 100) if row["target_qty"] else 0
         
         status = ""
-        if variance_amount > 0:
-            status = "Above Target"
-        elif variance_amount < 0:
-            status = "Below Target"
+        if variance_qty > 0:
+            status = "Above"
+        elif variance_qty < 0:
+            status = "Below"
         else:
             status = "On Target"
-
-        row = {
-            "month": month,
-            "ly_qty": ly_qty,
-            "ly_amount": ly_amount,
-            "target_qty": target_qty,
-            "target_amount": target_amount,
+        
+        data.append({
+            "crop": row["crop"],
+            "seed_variety": row["seed_variety"],
+            "party": row["party"],
+            "month": row["month"],
+            "target_qty": row["target_qty"],
+            "target_amount": row["target_amount"],
             "actual_qty": actual_qty,
             "actual_amount": actual_amount,
             "variance_qty": variance_qty,
-            "variance_amount": variance_amount,
+            "variance_pct": variance_pct,
             "status": status
-        }
-        data.append(row)
+        })
+    
+    # Sort by Crop, Variety, Month
+    months_order = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, 
+                    "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
+    data.sort(key=lambda x: (x.get("crop") or "", x.get("seed_variety") or "", months_order.get(x.get("month"), 0)))
 
     return data
 
@@ -205,24 +208,73 @@ def filter_plan_rows(plan, filters):
         rows.append(row)
     return rows
 
-def calculate_exponential_smoothing(history_map):
-    alpha = 0.5 
-    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+def get_detailed_actuals(filters, plans):
+    """Get actuals broken down by variety and month"""
     
-    forecast = {}
-    last_val = history_map.get(months[0], 0) if months else 0
+    # Collect all varieties from plans
+    varieties = set()
+    for plan in plans:
+        for row in plan.targets:
+            if row.seed_variety:
+                varieties.add(row.seed_variety)
     
-    for month in months:
-        actual = history_map.get(month, 0)
-        if actual == 0 and last_val == 0:
-            smoothed = 0
-        else:
-             smoothed = alpha * actual + (1 - alpha) * last_val
-        
-        forecast[month] = smoothed * 1.05
-        last_val = smoothed
-        
-    return forecast
+    if not varieties:
+        return {}
+    
+    # Time window
+    fy = frappe.get_doc("Fiscal Year", filters.get("fiscal_year"))
+    
+    # Scope Filter
+    scope_condition = ""
+    if filters.get("customer"):
+        scope_condition = f"AND si.customer = '{filters.get('customer')}'"
+    elif filters.get("country"):
+        territory_lft, territory_rgt = frappe.db.get_value("Territory", filters.get("country"), ["lft", "rgt"])
+        if territory_lft and territory_rgt:
+            scope_condition = f"""
+                AND si.territory IN (
+                    SELECT name FROM `tabTerritory`
+                    WHERE lft >= {territory_lft} AND rgt <= {territory_rgt}
+                )
+            """
+    
+    # Variety Filter
+    valid_varieties = [v for v in varieties if v]
+    if not valid_varieties:
+        return {}
+    
+    formatted = "', '".join(valid_varieties)
+    
+    # Query
+    query = f"""
+        SELECT 
+            sii.item_code as variety,
+            DATE_FORMAT(si.posting_date, '%%b') as month,
+            SUM(sii.qty) as qty,
+            SUM(sii.amount) as amount
+        FROM `tabSales Invoice` si
+        JOIN `tabSales Invoice Item` sii ON sii.parent = si.name
+        WHERE si.docstatus = 1
+            AND si.company = %(company)s
+            AND si.posting_date BETWEEN %(year_start_date)s AND %(year_end_date)s
+            AND sii.item_code IN ('{formatted}')
+            {scope_condition}
+        GROUP BY sii.item_code, DATE_FORMAT(si.posting_date, '%%b')
+    """
+    
+    results = frappe.db.sql(query, {
+        "company": filters.get("company"),
+        "year_start_date": fy.year_start_date,
+        "year_end_date": fy.year_end_date
+    }, as_dict=True)
+    
+    # Build map: (variety, month) -> {qty, amount}
+    actual_map = {}
+    for row in results:
+        key = (row.variety, row.month)
+        actual_map[key] = {"qty": flt(row.qty), "amount": flt(row.amount)}
+    
+    return actual_map
 
 def get_aggregated_actuals(filters, varieties):
     # Logic to fetch actual sales for the given scope and varieties
@@ -283,38 +335,43 @@ def get_aggregated_actuals(filters, varieties):
 def get_chart(data):
     if not data:
         return None
-        
-    labels = [row.get("month") for row in data]
     
-    ly_data = [row.get("ly_amount") for row in data]
-    target_data = [row.get("target_amount") for row in data]
-    actual_data = [row.get("actual_amount") for row in data]
+    # Aggregate data by month for chart
+    months_order = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    
+    monthly_target_qty = {m: 0 for m in months_order}
+    monthly_actual_qty = {m: 0 for m in months_order}
+    monthly_target_amt = {m: 0 for m in months_order}
+    monthly_actual_amt = {m: 0 for m in months_order}
+    
+    for row in data:
+        month = row.get("month")
+        if month in monthly_target_qty:
+            monthly_target_qty[month] += flt(row.get("target_qty"))
+            monthly_actual_qty[month] += flt(row.get("actual_qty"))
+            monthly_target_amt[month] += flt(row.get("target_amount"))
+            monthly_actual_amt[month] += flt(row.get("actual_amount"))
     
     return {
         "data": {
-            "labels": labels,
+            "labels": months_order,
             "datasets": [
                 {
-                    "name": "LY Amount",
-                    "values": ly_data,
-                    "chartType": "line",
-                    "color": "gray"
-                },
-                {
-                    "name": "Target Amount",
-                    "values": target_data,
-                    "chartType": "line",
-                    "color": "blue"
-                },
-                {
-                    "name": "Actual Amount",
-                    "values": actual_data,
+                    "name": "Target Qty",
+                    "values": [monthly_target_qty[m] for m in months_order],
                     "chartType": "bar",
-                    "color": "green"
+                    "color": "#2490ef"
+                },
+                {
+                    "name": "Actual Qty",
+                    "values": [monthly_actual_qty[m] for m in months_order],
+                    "chartType": "bar",
+                    "color": "#28a745"
                 }
             ]
         },
-        "type": "axis-mixed"
+        "type": "bar",
+        "colors": ["#2490ef", "#28a745"]
     }
 
 @frappe.whitelist()
