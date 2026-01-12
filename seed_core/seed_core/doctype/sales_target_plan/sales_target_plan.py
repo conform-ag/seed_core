@@ -45,9 +45,12 @@ class SalesTargetPlan(Document):
         self.targets = []
         
         for row in historical_data:
+            # Fetch crop (which is item_group or can be fetched from Seed Variety)
+            crop = frappe.db.get_value("Seed Variety", row.seed_variety, "crop")
+            
             self.append("targets", {
-                "item_code": row.item_code,
-                "item_group": row.item_group,
+                "seed_variety": row.seed_variety,
+                "crop": crop,
                 "month": row.month,
                 "history_qty": row.qty,
                 "history_amount": row.amount,
@@ -107,19 +110,17 @@ class SalesTargetPlan(Document):
         
         query = f"""
             SELECT 
-                sii.item_code,
-                i.item_group,
+                sii.item_code as seed_variety,
                 DATE_FORMAT(si.posting_date, '%%b') as month,
                 SUM(sii.qty) as qty,
                 SUM(sii.amount) as amount
             FROM `tabSales Invoice Item` sii
             JOIN `tabSales Invoice` si ON sii.parent = si.name
-            LEFT JOIN `tabItem` i ON sii.item_code = i.name
             WHERE si.docstatus = 1
                 AND si.posting_date BETWEEN %(from_date)s AND %(to_date)s
                 AND si.company = %(company)s
                 {party_filter}
-            GROUP BY sii.item_code, i.item_group, DATE_FORMAT(si.posting_date, '%%b')
+            GROUP BY sii.item_code, DATE_FORMAT(si.posting_date, '%%b')
             ORDER BY sii.item_code, MONTH(si.posting_date)
         """
         
@@ -155,7 +156,7 @@ def get_subsidiary_forecast(subsidiary, fiscal_year):
     plan = frappe.get_doc("Sales Target Plan", forecasts[0].name)
     
     return [{
-        "item_code": row.item_code,
+        "seed_variety": row.seed_variety,
         "month": row.month,
         "forecast_qty": row.forecast_qty,
         "forecast_amount": row.forecast_amount

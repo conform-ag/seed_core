@@ -18,34 +18,33 @@ class SeedVariety(Document):
 
     def create_item_if_not_exists(self):
         """
-        Creates an Item linked to this Seed Variety with proper defaults for seed management:
-        - Batch tracking enabled
-        - Stock item
-        - Default UOM: Nos (seeds counted individually)
+        Creates or Updates an Item linked to this Seed Variety.
+        Syncs: Image, Description, Crop (Item Group)
         """
-        if frappe.db.exists("Item", self.variety_name):
-            return
-
-        # Get or create the Seeds item group
         item_group = self.get_or_create_item_group()
-
-        item = frappe.new_doc("Item")
-        item.item_code = self.variety_name
+        
+        if frappe.db.exists("Item", self.variety_name):
+            item = frappe.get_doc("Item", self.variety_name)
+        else:
+            item = frappe.new_doc("Item")
+            item.item_code = self.variety_name
+            item.stock_uom = "Nos"
+            item.is_stock_item = 1
+            item.has_batch_no = 1
+            item.create_new_batch = 1
+            item.has_serial_no = 0
+            
+        # Update fields that should be synced
         item.item_name = self.variety_name
         item.item_group = item_group
-        item.stock_uom = "Nos"
-        item.is_stock_item = 1
-        item.has_batch_no = 1
-        item.create_new_batch = 1
-        item.has_serial_no = 0
         item.description = f"Seed Variety: {self.variety_name}"
-        
-        # Add crop info to description if available
         if self.crop:
             item.description = f"{self.crop} - {self.variety_name}"
-        
-        item.insert(ignore_permissions=True)
-        # We don't msgprint in after_insert usually as it might be background, but sync_item will handle it.
+            
+        if self.image:
+            item.image = self.image
+            
+        item.save(ignore_permissions=True)
 
     def get_or_create_item_group(self):
         """Get or create the crop-based item group under Seeds"""

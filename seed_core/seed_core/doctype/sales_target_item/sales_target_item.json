@@ -5,8 +5,8 @@
     "editable_grid": 1,
     "engine": "InnoDB",
     "field_order": [
-        "item_code",
-        "item_group",
+        "seed_variety",
+        "crop",
         "month",
         "column_break_history",
         "history_qty",
@@ -19,18 +19,18 @@
     ],
     "fields": [
         {
-            "fieldname": "item_code",
+            "fieldname": "seed_variety",
             "fieldtype": "Link",
             "in_list_view": 1,
-            "label": "Item",
-            "options": "Item"
+            "label": "Seed Variety",
+            "options": "Seed Variety"
         },
         {
-            "fieldname": "item_group",
+            "fieldname": "crop",
             "fieldtype": "Link",
             "in_list_view": 1,
-            "label": "Item Group",
-            "options": "Item Group"
+            "label": "Crop",
+            "options": "Seed Crop"
         },
         {
             "default": "Jan",
@@ -67,7 +67,7 @@
             "fieldtype": "Currency",
             "in_list_view": 1,
             "label": "Rate",
-            "read_only": 1
+            "read_only": 0
         },
         {
             "fieldname": "forecast_qty",

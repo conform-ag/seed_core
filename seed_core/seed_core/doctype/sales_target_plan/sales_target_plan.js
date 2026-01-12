@@ -24,7 +24,7 @@ frappe.ui.form.on('Sales Target Plan', {
                             frm.clear_table('targets');
                             r.message.forEach(function (row) {
                                 let child = frm.add_child('targets');
-                                child.item_code = row.item_code;
+                                child.seed_variety = row.seed_variety;
                                 child.month = row.month;
                                 child.forecast_qty = row.forecast_qty;
                                 child.forecast_amount = row.forecast_amount;
@@ -90,27 +90,38 @@ frappe.ui.form.on('Sales Target Plan', {
 
 // Child table events
 frappe.ui.form.on('Sales Target Item', {
-    item_code: function (frm, cdt, cdn) {
+    seed_variety: function (frm, cdt, cdn) {
         let row = locals[cdt][cdn];
-        if (row.item_code && frm.doc.price_list) {
-            // Fetch Rate from Item Price
-            frappe.call({
-                method: "frappe.client.get_value",
-                args: {
-                    doctype: "Item Price",
-                    filters: {
-                        item_code: row.item_code,
-                        price_list: frm.doc.price_list
+        if (row.seed_variety) {
+
+            // 1. Fetch Rate from Item Price (Item Code = Seed Variety Name)
+            if (frm.doc.price_list) {
+                frappe.call({
+                    method: "frappe.client.get_value",
+                    args: {
+                        doctype: "Item Price",
+                        filters: {
+                            item_code: row.seed_variety,
+                            price_list: frm.doc.price_list
+                        },
+                        fieldname: "price_list_rate"
                     },
-                    fieldname: "price_list_rate"
-                },
-                callback: function (r) {
-                    if (r.message) {
-                        frappe.model.set_value(cdt, cdn, 'rate', r.message.price_list_rate);
-                        calculate_row_amount(frm, cdt, cdn);
+                    callback: function (r) {
+                        if (r.message) {
+                            frappe.model.set_value(cdt, cdn, 'rate', r.message.price_list_rate);
+                            calculate_row_amount(frm, cdt, cdn);
+                        }
                     }
-                }
-            });
+                });
+            }
+
+            // 2. Fetch Crop from Seed Variety
+            frappe.db.get_value('Seed Variety', row.seed_variety, 'crop')
+                .then(r => {
+                    if (r && r.message && r.message.crop) {
+                        frappe.model.set_value(cdt, cdn, 'crop', r.message.crop);
+                    }
+                });
         }
     },
 

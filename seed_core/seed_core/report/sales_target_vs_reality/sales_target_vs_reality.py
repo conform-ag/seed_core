@@ -171,15 +171,24 @@ def get_current_actuals(plan):
             )
         """
 
+    # Filter by items (varieties) in the plan to ensure "Reality" matches "Target" scope
+    varieties = [row.seed_variety for row in plan.targets]
+    item_filter = ""
+    if varieties:
+        formatted_varieties = "', '".join(varieties)
+        item_filter = f"AND sii.item_code IN ('{formatted_varieties}')"
+
     query = f"""
         SELECT 
             DATE_FORMAT(si.posting_date, '%%b') as month,
-            SUM(si.grand_total) as amount
+            SUM(sii.amount) as amount
         FROM `tabSales Invoice` si
+        JOIN `tabSales Invoice Item` sii ON sii.parent = si.name
         WHERE si.docstatus = 1
             AND si.company = %(company)s
             AND si.posting_date BETWEEN %(from_date)s AND %(to_date)s
             {party_filter}
+            {item_filter}
         GROUP BY DATE_FORMAT(si.posting_date, '%%b')
     """
     

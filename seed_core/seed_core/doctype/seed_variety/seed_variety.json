@@ -11,6 +11,7 @@
         "column_break_info",
         "scientific_name",
         "description",
+        "image",
         "section_break_specs",
         "plant_characteristics",
         "fruit_characteristics",
@@ -58,6 +59,11 @@
             "fieldname": "description",
             "fieldtype": "Small Text",
             "label": "Description"
+        },
+        {
+            "fieldname": "image",
+            "fieldtype": "Attach Image",
+            "label": "Image"
         },
         {
             "fieldname": "column_break_info",
