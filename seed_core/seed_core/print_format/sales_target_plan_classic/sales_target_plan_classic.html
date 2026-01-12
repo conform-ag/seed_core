@@ -26,7 +26,8 @@
             </div>
             <div class="row">
                 <div class="col-xs-4 text-muted">{{ _("Status") }}</div>
-                <div class="col-xs-8">{{ doc.status }}</div>
+                <div class="col-xs-8">{% if doc.docstatus == 1 %}Submitted{% elif doc.docstatus == 2 %}Cancelled{% else
+                    %}Draft{% endif %}</div>
             </div>
         </div>
     </div>

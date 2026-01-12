@@ -30,6 +30,7 @@
         {
             "label": "Seed Variety",
             "link_count": 0,
+            "link_to": "Seed Variety",
             "link_type": "DocType",
             "onboard": 1,
             "type": "Link"
@@ -37,6 +38,7 @@
         {
             "label": "Customer",
             "link_count": 0,
+            "link_to": "Customer",
             "link_type": "DocType",
             "onboard": 1,
             "type": "Link"
@@ -44,6 +46,7 @@
         {
             "label": "Seed Crop",
             "link_count": 0,
+            "link_to": "Seed Crop",
             "link_type": "DocType",
             "onboard": 0,
             "type": "Link"
@@ -51,6 +54,7 @@
         {
             "label": "Seed Segment",
             "link_count": 0,
+            "link_to": "Seed Segment",
             "link_type": "DocType",
             "onboard": 0,
             "type": "Link"
@@ -58,6 +62,7 @@
         {
             "label": "Seed Processing",
             "link_count": 0,
+            "link_to": "Seed Processing",
             "link_type": "DocType",
             "onboard": 0,
             "type": "Link"
@@ -65,6 +70,7 @@
         {
             "label": "Batch",
             "link_count": 0,
+            "link_to": "Batch",
             "link_type": "DocType",
             "onboard": 0,
             "type": "Link"
@@ -72,6 +78,7 @@
         {
             "label": "Lab Test",
             "link_count": 0,
+            "link_to": "Lab Test",
             "link_type": "DocType",
             "onboard": 0,
             "type": "Link"
@@ -79,6 +86,7 @@
         {
             "label": "Seed Stock Balance",
             "link_count": 0,
+            "link_to": "Seed Stock Balance",
             "link_type": "Report",
             "onboard": 0,
             "type": "Link"
@@ -86,6 +94,7 @@
         {
             "label": "Sales Target Plan",
             "link_count": 0,
+            "link_to": "Sales Target Plan",
             "link_type": "DocType",
             "onboard": 1,
             "type": "Link"

@@ -84,7 +84,8 @@ def get_data(filters):
             month = row.month
             history_map[month] = history_map.get(month, 0) + flt(row.history_amount)
             target_map[month] = target_map.get(month, 0) + flt(row.forecast_amount)
-            total_varieties.add(row.seed_variety)
+            if row.seed_variety:
+                total_varieties.add(row.seed_variety)
 
     # 4. Calculate Stat Forecast (AI) based on Aggregated History
     stat_forecast_map = calculate_exponential_smoothing(history_map)
@@ -220,11 +221,13 @@ def get_aggregated_actuals(filters, varieties):
             )
         """
         
-    # Variety Filter
     item_condition = ""
     if varieties:
-        formatted = "', '".join(varieties)
-        item_condition = f"AND sii.item_code IN ('{formatted}')"
+        # Filter out None values
+        valid_varieties = [v for v in varieties if v]
+        if valid_varieties:
+            formatted = "', '".join(valid_varieties)
+            item_condition = f"AND sii.item_code IN ('{formatted}')"
     elif filters.get("seed_variety"):
          item_condition = f"AND sii.item_code = '{filters.get('seed_variety')}'"
          
