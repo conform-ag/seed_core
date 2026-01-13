@@ -16,7 +16,13 @@
         "column_break_2",
         "auto_sync_master_data",
         "sync_frequency",
-        "last_sync_on"
+        "last_sync_on",
+        "permissions_section",
+        "can_edit_variety_descriptions",
+        "can_add_local_varieties",
+        "column_break_permissions",
+        "can_edit_commercial_names",
+        "sync_local_edits_to_parent"
     ],
     "fields": [
         {
@@ -95,6 +101,44 @@
             "fieldtype": "Datetime",
             "label": "Last Sync On",
             "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.site_type=='Subsidiary'",
+            "fieldname": "permissions_section",
+            "fieldtype": "Section Break",
+            "label": "Subsidiary Permissions"
+        },
+        {
+            "default": "0",
+            "fieldname": "can_edit_variety_descriptions",
+            "fieldtype": "Check",
+            "label": "Can Edit Variety Descriptions",
+            "description": "Allow editing descriptions on synced varieties"
+        },
+        {
+            "default": "0",
+            "fieldname": "can_add_local_varieties",
+            "fieldtype": "Check",
+            "label": "Can Add Local Varieties",
+            "description": "Allow creating varieties not from parent"
+        },
+        {
+            "fieldname": "column_break_permissions",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "1",
+            "fieldname": "can_edit_commercial_names",
+            "fieldtype": "Check",
+            "label": "Can Edit Commercial Names",
+            "description": "Allow editing commercial names for own country"
+        },
+        {
+            "default": "0",
+            "fieldname": "sync_local_edits_to_parent",
+            "fieldtype": "Check",
+            "label": "Sync Local Edits to Parent",
+            "description": "Push local edits back to parent site"
         }
     ],
     "issingle": 1,

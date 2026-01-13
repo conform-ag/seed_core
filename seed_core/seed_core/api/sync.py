@@ -322,3 +322,157 @@ def push_actuals_to_parent():
         
     except requests.exceptions.RequestException as e:
         return {"success": False, "error": str(e)}
+
+
+# ============================================
+# VARIETY SYNC
+# ============================================
+
+@frappe.whitelist()
+def get_varieties_for_subsidiary(subsidiary_code):
+    """
+    Called by subsidiary to fetch all seed varieties from parent.
+    Returns varieties with commercial names.
+    """
+    settings = frappe.get_single("Seed Core Settings")
+    
+    if settings.site_type != "Parent Company":
+        frappe.throw(_("This endpoint is only available on parent site"))
+    
+    varieties = frappe.get_all(
+        "Seed Variety",
+        fields=["name", "variety_name", "crop", "segment", "scientific_name", 
+                "description", "image", "plant_characteristics", "fruit_characteristics",
+                "resistance_codes", "cultivation_environment"]
+    )
+    
+    result = []
+    for v in varieties:
+        # Get commercial names
+        commercial_names = frappe.get_all(
+            "Seed Variety Name",
+            filters={"parent": v.name},
+            fields=["country", "commercial_name"]
+        )
+        
+        result.append({
+            "variety_name": v.variety_name,
+            "crop": v.crop,
+            "segment": v.segment,
+            "scientific_name": v.scientific_name,
+            "description": v.description,
+            "image": v.image,
+            "plant_characteristics": v.plant_characteristics,
+            "fruit_characteristics": v.fruit_characteristics,
+            "resistance_codes": v.resistance_codes,
+            "cultivation_environment": v.cultivation_environment,
+            "commercial_names": commercial_names
+        })
+    
+    return {"success": True, "varieties": result}
+
+
+@frappe.whitelist()
+def pull_varieties_from_parent():
+    """
+    Called on subsidiary to fetch seed varieties from parent site.
+    Creates/updates local Seed Variety documents.
+    """
+    settings = frappe.get_single("Seed Core Settings")
+    
+    if settings.site_type != "Subsidiary":
+        frappe.throw(_("This function is only for subsidiary sites"))
+    
+    if not settings.parent_site_url or not settings.api_key:
+        frappe.throw(_("Parent site URL and API credentials not configured"))
+    
+    import requests
+    
+    url = f"{settings.parent_site_url}/api/method/seed_core.api.sync.get_varieties_for_subsidiary"
+    headers = {
+        "Authorization": f"token {settings.api_key}:{settings.get_password('api_secret')}"
+    }
+    params = {"subsidiary_code": settings.subsidiary_code}
+    
+    try:
+        response = requests.get(url, headers=headers, params=params, timeout=60)
+        response.raise_for_status()
+        result = response.json()
+        
+        if not result.get("message", {}).get("success"):
+            return {"success": False, "error": result.get("message", {}).get("error", "Unknown error")}
+        
+        varieties = result.get("message", {}).get("varieties", [])
+        created = 0
+        updated = 0
+        
+        for v_data in varieties:
+            variety_name = v_data.get("variety_name")
+            
+            if frappe.db.exists("Seed Variety", variety_name):
+                # Update existing
+                doc = frappe.get_doc("Seed Variety", variety_name)
+                
+                # Only update if synced from parent (don't overwrite local edits on local varieties)
+                if doc.is_synced_from_parent:
+                    update_variety_from_parent(doc, v_data)
+                    doc.last_synced_on = now_datetime()
+                    doc.save(ignore_permissions=True)
+                    updated += 1
+            else:
+                # Create new
+                doc = frappe.new_doc("Seed Variety")
+                doc.variety_name = variety_name
+                update_variety_from_parent(doc, v_data)
+                doc.is_synced_from_parent = 1
+                doc.parent_variety_id = variety_name
+                doc.last_synced_on = now_datetime()
+                doc.insert(ignore_permissions=True)
+                created += 1
+        
+        # Update last sync timestamp
+        settings.last_sync_on = now_datetime()
+        settings.save(ignore_permissions=True)
+        frappe.db.commit()
+        
+        return {
+            "success": True,
+            "created": created,
+            "updated": updated,
+            "message": f"Synced {created + updated} varieties from parent"
+        }
+        
+    except requests.exceptions.RequestException as e:
+        return {"success": False, "error": str(e)}
+
+
+def update_variety_from_parent(doc, data):
+    """Update variety doc with data from parent"""
+    doc.crop = data.get("crop")
+    doc.segment = data.get("segment")
+    doc.scientific_name = data.get("scientific_name")
+    doc.description = data.get("description")
+    doc.image = data.get("image")
+    doc.plant_characteristics = data.get("plant_characteristics")
+    doc.fruit_characteristics = data.get("fruit_characteristics")
+    doc.resistance_codes = data.get("resistance_codes")
+    doc.cultivation_environment = data.get("cultivation_environment")
+    
+    # Update commercial names
+    doc.variety_names = []
+    for cn in data.get("commercial_names", []):
+        doc.append("variety_names", {
+            "country": cn.get("country"),
+            "commercial_name": cn.get("commercial_name")
+        })
+
+
+def get_country_for_subsidiary(subsidiary_code):
+    """Map subsidiary code to country"""
+    mapping = {
+        "MA": "Morocco",
+        "ES": "Spain",
+        "TR": "Turkey"
+    }
+    return mapping.get(subsidiary_code)
+

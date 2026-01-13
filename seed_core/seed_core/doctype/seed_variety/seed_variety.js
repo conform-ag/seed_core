@@ -19,6 +19,11 @@ frappe.ui.form.on('Seed Variety', {
             load_stock_details(frm);
             load_sales_transactions(frm);
             load_purchase_transactions(frm);
+
+            // Apply permissions for synced varieties
+            if (frm.doc.is_synced_from_parent) {
+                apply_sync_permissions(frm);
+            }
         }
     },
 
@@ -28,6 +33,55 @@ frappe.ui.form.on('Seed Variety', {
         }
     }
 });
+
+function apply_sync_permissions(frm) {
+    // Get settings to check permissions
+    frappe.call({
+        method: 'frappe.client.get_single_value',
+        args: {
+            doctype: 'Seed Core Settings',
+            field: 'site_type'
+        },
+        async: false,
+        callback: function (r) {
+            if (r.message === 'Subsidiary') {
+                // Lock core fields on synced varieties
+                frm.set_df_property('variety_name', 'read_only', 1);
+                frm.set_df_property('crop', 'read_only', 1);
+                frm.set_df_property('segment', 'read_only', 1);
+                frm.set_df_property('scientific_name', 'read_only', 1);
+                frm.set_df_property('image', 'read_only', 1);
+                frm.set_df_property('plant_characteristics', 'read_only', 1);
+                frm.set_df_property('fruit_characteristics', 'read_only', 1);
+                frm.set_df_property('resistance_codes', 'read_only', 1);
+                frm.set_df_property('cultivation_environment', 'read_only', 1);
+
+                // Check if can edit descriptions
+                check_permission_and_apply(frm, 'can_edit_variety_descriptions', 'description');
+
+                // Show synced indicator
+                frm.dashboard.add_indicator(__('Synced from Parent'), 'blue');
+            }
+        }
+    });
+}
+
+function check_permission_and_apply(frm, setting_field, doc_field) {
+    frappe.call({
+        method: 'frappe.client.get_single_value',
+        args: {
+            doctype: 'Seed Core Settings',
+            field: setting_field
+        },
+        async: false,
+        callback: function (r) {
+            if (!r.message) {
+                frm.set_df_property(doc_field, 'read_only', 1);
+            }
+        }
+    });
+}
+
 
 function load_stock_details(frm) {
     frappe.call({

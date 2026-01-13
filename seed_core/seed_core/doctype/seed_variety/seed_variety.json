@@ -29,7 +29,12 @@
         "section_break_purchase",
         "purchase_transactions_html",
         "section_break_names",
-        "variety_names"
+        "variety_names",
+        "section_break_sync",
+        "is_synced_from_parent",
+        "parent_variety_id",
+        "last_synced_on",
+        "local_modifications"
     ],
     "fields": [
         {
@@ -173,6 +178,43 @@
             "fieldtype": "Table",
             "label": "Variety Names",
             "options": "Seed Variety Name"
+        },
+        {
+            "collapsible": 1,
+            "collapsible_depends_on": "is_synced_from_parent",
+            "fieldname": "section_break_sync",
+            "fieldtype": "Section Break",
+            "label": "Sync Information"
+        },
+        {
+            "default": "0",
+            "fieldname": "is_synced_from_parent",
+            "fieldtype": "Check",
+            "label": "Synced from Parent",
+            "read_only": 1,
+            "description": "This variety was synced from parent company"
+        },
+        {
+            "depends_on": "is_synced_from_parent",
+            "fieldname": "parent_variety_id",
+            "fieldtype": "Data",
+            "label": "Parent Variety ID",
+            "read_only": 1
+        },
+        {
+            "depends_on": "is_synced_from_parent",
+            "fieldname": "last_synced_on",
+            "fieldtype": "Datetime",
+            "label": "Last Synced On",
+            "read_only": 1
+        },
+        {
+            "depends_on": "is_synced_from_parent",
+            "fieldname": "local_modifications",
+            "fieldtype": "Small Text",
+            "label": "Local Modifications",
+            "read_only": 1,
+            "description": "JSON of fields modified locally"
         }
     ],
     "allow_import": 1,
