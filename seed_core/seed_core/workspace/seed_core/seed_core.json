@@ -126,6 +126,15 @@
             "restrict_to_domain": "",
             "stats_filter": "",
             "type": "Report"
+        },
+        {
+            "color": "Grey",
+            "doc_view": "",
+            "label": "Seed Core Settings",
+            "link_to": "Seed Core Settings",
+            "restrict_to_domain": "",
+            "stats_filter": "",
+            "type": "DocType"
         }
     ],
     "title": "Seed Core"

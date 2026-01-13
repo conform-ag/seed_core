@@ -17,8 +17,8 @@ frappe.query_reports["Sales Target vs Reality"] = {
             "reqd": 1
         },
         {
-            "fieldname": "country",
-            "label": __("Country"),
+            "fieldname": "territory",
+            "label": __("Territory"),
             "fieldtype": "Link",
             "options": "Territory"
         },
@@ -30,7 +30,7 @@ frappe.query_reports["Sales Target vs Reality"] = {
         },
         {
             "fieldname": "crop",
-            "label": __("See Crop"),
+            "label": __("Seed Crop"),
             "fieldtype": "Link",
             "options": "Seed Crop"
         },
