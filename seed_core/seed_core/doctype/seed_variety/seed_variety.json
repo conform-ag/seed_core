@@ -22,6 +22,12 @@
         "total_stock_qty",
         "column_break_stock",
         "selling_price",
+        "section_break_stock_detail",
+        "stock_detail_html",
+        "section_break_sales",
+        "sales_transactions_html",
+        "section_break_purchase",
+        "purchase_transactions_html",
         "section_break_names",
         "variety_names"
     ],
@@ -123,6 +129,39 @@
             "read_only": 1,
             "is_virtual": 1,
             "in_list_view": 1
+        },
+        {
+            "collapsible": 1,
+            "fieldname": "section_break_stock_detail",
+            "fieldtype": "Section Break",
+            "label": "Stock by Warehouse & Batch"
+        },
+        {
+            "fieldname": "stock_detail_html",
+            "fieldtype": "HTML",
+            "label": "Stock Details"
+        },
+        {
+            "collapsible": 1,
+            "fieldname": "section_break_sales",
+            "fieldtype": "Section Break",
+            "label": "Sales Transactions"
+        },
+        {
+            "fieldname": "sales_transactions_html",
+            "fieldtype": "HTML",
+            "label": "Sales"
+        },
+        {
+            "collapsible": 1,
+            "fieldname": "section_break_purchase",
+            "fieldtype": "Section Break",
+            "label": "Purchase Transactions"
+        },
+        {
+            "fieldname": "purchase_transactions_html",
+            "fieldtype": "HTML",
+            "label": "Purchases"
         },
         {
             "fieldname": "section_break_names",

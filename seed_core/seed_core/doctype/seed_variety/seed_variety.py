@@ -107,3 +107,137 @@ class SeedVariety(Document):
         )
         
         return price or 0
+
+
+@frappe.whitelist()
+def get_stock_details(variety_name):
+    """Get stock details by warehouse and batch for a seed variety"""
+    if not variety_name or not frappe.db.exists("Item", variety_name):
+        return []
+    
+    data = frappe.db.sql("""
+        SELECT 
+            b.warehouse,
+            b.actual_qty,
+            i.stock_uom,
+            sle.batch_no,
+            batch.expiry_date
+        FROM `tabBin` b
+        LEFT JOIN `tabItem` i ON i.name = b.item_code
+        LEFT JOIN (
+            SELECT batch_no, warehouse, item_code
+            FROM `tabStock Ledger Entry`
+            WHERE item_code = %(item_code)s AND actual_qty > 0
+            GROUP BY batch_no, warehouse
+        ) sle ON sle.warehouse = b.warehouse
+        LEFT JOIN `tabBatch` batch ON batch.name = sle.batch_no
+        WHERE b.item_code = %(item_code)s AND b.actual_qty > 0
+        ORDER BY b.warehouse, sle.batch_no
+    """, {"item_code": variety_name}, as_dict=True)
+    
+    return data
+
+
+@frappe.whitelist()
+def get_sales_transactions(variety_name):
+    """Get sales transactions for a seed variety"""
+    if not variety_name or not frappe.db.exists("Item", variety_name):
+        return {"sales_orders": [], "sales_invoices": [], "delivery_notes": []}
+    
+    # Sales Orders
+    sales_orders = frappe.db.sql("""
+        SELECT 
+            so.name, 
+            so.transaction_date as date,
+            so.customer as party,
+            soi.qty,
+            soi.amount,
+            so.status
+        FROM `tabSales Order` so
+        JOIN `tabSales Order Item` soi ON soi.parent = so.name
+        WHERE soi.item_code = %(item_code)s AND so.docstatus = 1
+        ORDER BY so.transaction_date DESC
+        LIMIT 20
+    """, {"item_code": variety_name}, as_dict=True)
+    
+    # Sales Invoices
+    sales_invoices = frappe.db.sql("""
+        SELECT 
+            si.name,
+            si.posting_date as date,
+            si.customer as party,
+            sii.qty,
+            sii.amount,
+            si.status
+        FROM `tabSales Invoice` si
+        JOIN `tabSales Invoice Item` sii ON sii.parent = si.name
+        WHERE sii.item_code = %(item_code)s AND si.docstatus = 1
+        ORDER BY si.posting_date DESC
+        LIMIT 20
+    """, {"item_code": variety_name}, as_dict=True)
+    
+    # Delivery Notes
+    delivery_notes = frappe.db.sql("""
+        SELECT 
+            dn.name,
+            dn.posting_date as date,
+            dn.customer as party,
+            dni.qty,
+            dni.amount,
+            dn.status
+        FROM `tabDelivery Note` dn
+        JOIN `tabDelivery Note Item` dni ON dni.parent = dn.name
+        WHERE dni.item_code = %(item_code)s AND dn.docstatus = 1
+        ORDER BY dn.posting_date DESC
+        LIMIT 20
+    """, {"item_code": variety_name}, as_dict=True)
+    
+    return {
+        "sales_orders": sales_orders,
+        "sales_invoices": sales_invoices,
+        "delivery_notes": delivery_notes
+    }
+
+
+@frappe.whitelist()
+def get_purchase_transactions(variety_name):
+    """Get purchase transactions for a seed variety"""
+    if not variety_name or not frappe.db.exists("Item", variety_name):
+        return {"purchase_receipts": [], "purchase_invoices": []}
+    
+    # Purchase Receipts
+    purchase_receipts = frappe.db.sql("""
+        SELECT 
+            pr.name,
+            pr.posting_date as date,
+            pr.supplier as party,
+            pri.qty,
+            pri.amount,
+            pr.status
+        FROM `tabPurchase Receipt` pr
+        JOIN `tabPurchase Receipt Item` pri ON pri.parent = pr.name
+        WHERE pri.item_code = %(item_code)s AND pr.docstatus = 1
+        ORDER BY pr.posting_date DESC
+        LIMIT 20
+    """, {"item_code": variety_name}, as_dict=True)
+    
+    # Purchase Invoices
+    purchase_invoices = frappe.db.sql("""
+        SELECT 
+            pi.name,
+            pi.posting_date as date,
+            pi.supplier as party,
+            pii.qty,
+            pii.amount,
+            pi.status
+        FROM `tabPurchase Invoice` pi
+        JOIN `tabPurchase Invoice Item` pii ON pii.parent = pi.name
+        WHERE pii.item_code = %(item_code)s AND pi.docstatus = 1
+        ORDER BY pi.posting_date DESC
+        LIMIT 20
+    """, {"item_code": variety_name}, as_dict=True)
+    
+    return {
+        "purchase_receipts": purchase_receipts,
+        "purchase_invoices": purchase_invoices
+    }
