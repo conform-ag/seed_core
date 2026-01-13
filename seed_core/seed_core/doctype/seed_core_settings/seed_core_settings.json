@@ -1,0 +1,165 @@
+{
+    "actions": [],
+    "creation": "2024-01-12 16:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "site_configuration_section",
+        "site_type",
+        "subsidiary_code",
+        "column_break_1",
+        "default_customer_type",
+        "sync_section",
+        "parent_site_url",
+        "api_key",
+        "api_secret",
+        "column_break_2",
+        "auto_sync_master_data",
+        "sync_frequency",
+        "last_sync_on",
+        "permissions_section",
+        "can_edit_variety_descriptions",
+        "can_add_local_varieties",
+        "column_break_permissions",
+        "can_edit_commercial_names",
+        "sync_local_edits_to_parent"
+    ],
+    "fields": [
+        {
+            "fieldname": "site_configuration_section",
+            "fieldtype": "Section Break",
+            "label": "Site Configuration"
+        },
+        {
+            "default": "Subsidiary",
+            "fieldname": "site_type",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Site Type",
+            "options": "Parent Company\nSubsidiary",
+            "reqd": 1
+        },
+        {
+            "depends_on": "eval:doc.site_type=='Subsidiary'",
+            "fieldname": "subsidiary_code",
+            "fieldtype": "Data",
+            "label": "Subsidiary Code",
+            "description": "Unique code for this subsidiary (e.g., MA, ES)"
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "End Customer",
+            "fieldname": "default_customer_type",
+            "fieldtype": "Select",
+            "label": "Default Customer Type",
+            "options": "End Customer\nDistributor"
+        },
+        {
+            "depends_on": "eval:doc.site_type=='Subsidiary'",
+            "fieldname": "sync_section",
+            "fieldtype": "Section Break",
+            "label": "Parent Site Sync"
+        },
+        {
+            "fieldname": "parent_site_url",
+            "fieldtype": "Data",
+            "label": "Parent Site URL",
+            "description": "e.g., https://erp.yukselseeds.com"
+        },
+        {
+            "fieldname": "api_key",
+            "fieldtype": "Password",
+            "label": "API Key"
+        },
+        {
+            "fieldname": "api_secret",
+            "fieldtype": "Password",
+            "label": "API Secret"
+        },
+        {
+            "fieldname": "column_break_2",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "0",
+            "fieldname": "auto_sync_master_data",
+            "fieldtype": "Check",
+            "label": "Auto Sync Master Data"
+        },
+        {
+            "default": "Daily",
+            "fieldname": "sync_frequency",
+            "fieldtype": "Select",
+            "label": "Sync Frequency",
+            "options": "Manual\nDaily\nWeekly"
+        },
+        {
+            "fieldname": "last_sync_on",
+            "fieldtype": "Datetime",
+            "label": "Last Sync On",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.site_type=='Subsidiary'",
+            "fieldname": "permissions_section",
+            "fieldtype": "Section Break",
+            "label": "Subsidiary Permissions"
+        },
+        {
+            "default": "0",
+            "fieldname": "can_edit_variety_descriptions",
+            "fieldtype": "Check",
+            "label": "Can Edit Variety Descriptions",
+            "description": "Allow editing descriptions on synced varieties"
+        },
+        {
+            "default": "0",
+            "fieldname": "can_add_local_varieties",
+            "fieldtype": "Check",
+            "label": "Can Add Local Varieties",
+            "description": "Allow creating varieties not from parent"
+        },
+        {
+            "fieldname": "column_break_permissions",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "1",
+            "fieldname": "can_edit_commercial_names",
+            "fieldtype": "Check",
+            "label": "Can Edit Commercial Names",
+            "description": "Allow editing commercial names for own country"
+        },
+        {
+            "default": "0",
+            "fieldname": "sync_local_edits_to_parent",
+            "fieldtype": "Check",
+            "label": "Sync Local Edits to Parent",
+            "description": "Push local edits back to parent site"
+        }
+    ],
+    "issingle": 1,
+    "modified": "2024-01-12 16:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Seed Core",
+    "name": "Seed Core Settings",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "print": 1,
+            "read": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}

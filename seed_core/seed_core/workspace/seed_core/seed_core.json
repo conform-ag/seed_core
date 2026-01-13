@@ -126,6 +126,42 @@
             "restrict_to_domain": "",
             "stats_filter": "",
             "type": "Report"
+        },
+        {
+            "color": "Blue",
+            "doc_view": "",
+            "label": "Consolidated Sales Dashboard",
+            "link_to": "Consolidated Sales Dashboard",
+            "restrict_to_domain": "",
+            "stats_filter": "",
+            "type": "Report"
+        },
+        {
+            "color": "Purple",
+            "doc_view": "",
+            "label": "Regional Performance",
+            "link_to": "Regional Performance",
+            "restrict_to_domain": "",
+            "stats_filter": "",
+            "type": "Report"
+        },
+        {
+            "color": "Yellow",
+            "doc_view": "List",
+            "label": "Subsidiary Sales Summary",
+            "link_to": "Subsidiary Sales Summary",
+            "restrict_to_domain": "",
+            "stats_filter": "",
+            "type": "DocType"
+        },
+        {
+            "color": "Grey",
+            "doc_view": "",
+            "label": "Seed Core Settings",
+            "link_to": "Seed Core Settings",
+            "restrict_to_domain": "",
+            "stats_filter": "",
+            "type": "DocType"
         }
     ],
     "title": "Seed Core"

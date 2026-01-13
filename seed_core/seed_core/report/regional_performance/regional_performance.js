@@ -1,4 +1,4 @@
-frappe.query_reports["Sales Target vs Reality"] = {
+frappe.query_reports["Regional Performance"] = {
     "filters": [
         {
             "fieldname": "company",
@@ -17,38 +17,36 @@ frappe.query_reports["Sales Target vs Reality"] = {
             "reqd": 1
         },
         {
+            "fieldname": "region",
+            "label": __("Region"),
+            "fieldtype": "Select",
+            "options": "\nEurope\nMaghreb/Africa\nLATAM\nUSA/Canada\nAsia"
+        },
+        {
             "fieldname": "territory",
             "label": __("Territory"),
             "fieldtype": "Link",
             "options": "Territory"
         },
         {
-            "fieldname": "customer",
-            "label": __("Distributor/Subsidiary"),
-            "fieldtype": "Link",
-            "options": "Customer"
-        },
-        {
             "fieldname": "crop",
             "label": __("Seed Crop"),
             "fieldtype": "Link",
             "options": "Seed Crop"
-        },
-        {
-            "fieldname": "seed_variety",
-            "label": __("Seed Variety"),
-            "fieldtype": "Link",
-            "options": "Seed Variety",
-            "get_query": function () {
-                var crop = frappe.query_report.get_filter_value("crop");
-                if (crop) {
-                    return {
-                        filters: {
-                            "crop": crop
-                        }
-                    };
-                }
+        }
+    ],
+
+    "formatter": function (value, row, column, data, default_formatter) {
+        value = default_formatter(value, row, column, data);
+
+        if (column.fieldname == "achievement_pct") {
+            if (data.achievement_pct >= 100) {
+                value = "<span style='color:green;font-weight:bold'>✓ " + value + "</span>";
+            } else if (data.achievement_pct < 80) {
+                value = "<span style='color:red;font-weight:bold'>✗ " + value + "</span>";
             }
         }
-    ]
+
+        return value;
+    }
 };

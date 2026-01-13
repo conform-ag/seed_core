@@ -1,0 +1,138 @@
+{
+    "actions": [],
+    "autoname": "hash",
+    "creation": "2024-01-13 12:00:00.000000",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "subsidiary_code",
+        "subsidiary_name",
+        "fiscal_year",
+        "column_break_1",
+        "seed_variety",
+        "crop",
+        "month",
+        "section_break_values",
+        "qty",
+        "column_break_2",
+        "amount",
+        "section_break_sync",
+        "synced_on"
+    ],
+    "fields": [
+        {
+            "fieldname": "subsidiary_code",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "in_standard_filter": 1,
+            "label": "Subsidiary Code",
+            "reqd": 1
+        },
+        {
+            "fieldname": "subsidiary_name",
+            "fieldtype": "Data",
+            "label": "Subsidiary Name"
+        },
+        {
+            "fieldname": "fiscal_year",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "in_standard_filter": 1,
+            "label": "Fiscal Year",
+            "options": "Fiscal Year",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_1",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "seed_variety",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "in_standard_filter": 1,
+            "label": "Seed Variety",
+            "options": "Seed Variety",
+            "reqd": 1
+        },
+        {
+            "fetch_from": "seed_variety.crop",
+            "fieldname": "crop",
+            "fieldtype": "Link",
+            "in_standard_filter": 1,
+            "label": "Crop",
+            "options": "Seed Crop",
+            "read_only": 1
+        },
+        {
+            "fieldname": "month",
+            "fieldtype": "Select",
+            "in_list_view": 1,
+            "label": "Month",
+            "options": "Jan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec",
+            "reqd": 1
+        },
+        {
+            "fieldname": "section_break_values",
+            "fieldtype": "Section Break",
+            "label": "Values"
+        },
+        {
+            "fieldname": "qty",
+            "fieldtype": "Float",
+            "in_list_view": 1,
+            "label": "Quantity"
+        },
+        {
+            "fieldname": "column_break_2",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "amount",
+            "fieldtype": "Currency",
+            "in_list_view": 1,
+            "label": "Amount"
+        },
+        {
+            "fieldname": "section_break_sync",
+            "fieldtype": "Section Break",
+            "label": "Sync Info"
+        },
+        {
+            "fieldname": "synced_on",
+            "fieldtype": "Datetime",
+            "label": "Synced On",
+            "read_only": 1
+        }
+    ],
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2024-01-13 12:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Seed Core",
+    "name": "Subsidiary Sales Summary",
+    "naming_rule": "Random",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "read": 1,
+            "report": 1,
+            "role": "Sales Manager"
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "track_changes": 1
+}
