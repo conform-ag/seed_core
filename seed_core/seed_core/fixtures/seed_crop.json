@@ -1,0 +1,122 @@
+[
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "01",
+        "crop_name": "Tomato",
+        "scientific_name": "Solanum lycopersicum"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "02",
+        "crop_name": "Pepper",
+        "scientific_name": "Capsicum Annuum"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "03",
+        "crop_name": "Eggplant",
+        "scientific_name": "Solanum melongena"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "04",
+        "crop_name": "Cucumber",
+        "scientific_name": "Cucumis sativus"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "05",
+        "crop_name": "Melon",
+        "scientific_name": "Cucumis melo"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "06",
+        "crop_name": "Watermelon",
+        "scientific_name": "Citrullus lanatus"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "07",
+        "crop_name": "Bean",
+        "scientific_name": "Phaseolus vulgaris"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "08",
+        "crop_name": "Broccoli",
+        "scientific_name": "Brassica oleracea var. italica"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "09",
+        "crop_name": "Lettuce",
+        "scientific_name": "Lactuca sativa"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "10",
+        "crop_name": "Zucchini",
+        "scientific_name": "Cucurbita pepo"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "11",
+        "crop_name": "Bitter Gourd",
+        "scientific_name": "Momordica charantia"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "12",
+        "crop_name": "Rootstock",
+        "scientific_name": ""
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "13",
+        "crop_name": "Onion",
+        "scientific_name": "Allium cepa"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "14",
+        "crop_name": "Potato",
+        "scientific_name": "Solanum tuberosum"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "15",
+        "crop_name": "Cauliflower",
+        "scientific_name": "Brassica oleracea var. botrytis"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "16",
+        "crop_name": "Tomato Rootstock",
+        "scientific_name": ""
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "17",
+        "crop_name": "Cabbage",
+        "scientific_name": "Brassica oleracea var. capitata"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "19",
+        "crop_name": "Carrot",
+        "scientific_name": "Daucus carota"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "20",
+        "crop_name": "Maize",
+        "scientific_name": "Zea mays"
+    },
+    {
+        "doctype": "Seed Crop",
+        "crop_code": "21",
+        "crop_name": "Sweet Corn",
+        "scientific_name": "Zea mays subsp. mays"
+    }
+]

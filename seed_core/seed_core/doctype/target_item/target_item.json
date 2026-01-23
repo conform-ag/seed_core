@@ -1,0 +1,61 @@
+{
+    "name": "Target Item",
+    "module": "Seed Core",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "istable": 1,
+    "issingle": 0,
+    "editable_grid": 1,
+    "track_changes": 0,
+    "fields": [
+        {
+            "fieldname": "seed_variety",
+            "fieldtype": "Link",
+            "label": "Seed Variety",
+            "options": "Seed Variety",
+            "in_list_view": 1,
+            "reqd": 1
+        },
+        {
+            "fieldname": "seed_crop",
+            "fieldtype": "Link",
+            "label": "Crop",
+            "options": "Seed Crop",
+            "fetch_from": "seed_variety.seed_crop",
+            "in_list_view": 1,
+            "read_only": 1
+        },
+        {
+            "fieldname": "month",
+            "fieldtype": "Select",
+            "label": "Month",
+            "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "target_qty",
+            "fieldtype": "Float",
+            "label": "Target Qty",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "target_amount",
+            "fieldtype": "Currency",
+            "label": "Target Amount",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "actual_qty",
+            "fieldtype": "Float",
+            "label": "Actual Qty",
+            "read_only": 1
+        },
+        {
+            "fieldname": "actual_amount",
+            "fieldtype": "Currency",
+            "label": "Actual Amount",
+            "read_only": 1
+        }
+    ],
+    "permissions": []
+}

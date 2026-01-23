@@ -1,14 +1,22 @@
 app_name = "seed_core"
 app_title = "Seed Core"
 app_publisher = "aremtech"
-app_description = "Vertical Domain App"
+app_description = "Vertical Domain App - Seed Management ERP"
 app_email = "hello@aremtech.io"
 app_license = "mit"
 
 # Apps
 # ------------------
 
-# required_apps = []
+required_apps = ["erpnext"]
+
+# Fixtures - exported automatically on bench export-fixtures
+fixtures = [
+	{"dt": "Role", "filters": [["role_name", "in", ["Seed Geneticist", "Lab Technician", "Seed Processing Officer", "Sales Planner"]]]},
+	{"dt": "Custom Field", "filters": [["dt", "=", "Batch"]]},
+	{"dt": "Workspace", "filters": [["module", "=", "Seed Core"]]}
+]
+
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
@@ -132,13 +140,14 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Stock Entry": {
+		"validate": "seed_core.seed_core.stock_mixing_validation.validate_stock_mixing"
+	},
+	"Stock Reconciliation": {
+		"validate": "seed_core.seed_core.stock_mixing_validation.validate_stock_mixing"
+	}
+}
 
 # Scheduled Tasks
 # ---------------

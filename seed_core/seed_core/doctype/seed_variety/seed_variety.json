@@ -1,0 +1,188 @@
+{
+    "name": "Seed Variety",
+    "module": "Seed Core",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "naming_rule": "By fieldname",
+    "autoname": "field:variety_identifier",
+    "istable": 0,
+    "issingle": 0,
+    "is_submittable": 0,
+    "allow_import": 1,
+    "track_changes": 1,
+    "fields": [
+        {
+            "fieldname": "basic_info_section",
+            "fieldtype": "Section Break",
+            "label": "Basic Information"
+        },
+        {
+            "fieldname": "variety_identifier",
+            "fieldtype": "Data",
+            "label": "Variety Identifier",
+            "reqd": 1,
+            "unique": 1,
+            "in_list_view": 1,
+            "description": "Auto-generated unique identifier: {Crop}-{Segment}-{SubSegment}-{Code}"
+        },
+        {
+            "fieldname": "variety_code",
+            "fieldtype": "Data",
+            "label": "Variety Code",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "variety_name",
+            "fieldtype": "Data",
+            "label": "Variety Name",
+            "reqd": 1,
+            "in_list_view": 1,
+            "description": "Internal/R&D name"
+        },
+        {
+            "fieldname": "column_break_basic",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "lifecycle_stage",
+            "fieldtype": "Select",
+            "label": "Lifecycle Stage",
+            "options": "R&D\nTrial\nCommercial\nPhase Out\nDropped",
+            "default": "R&D",
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "linked_item",
+            "fieldtype": "Link",
+            "label": "Linked Item",
+            "options": "Item",
+            "read_only": 1,
+            "description": "Auto-created ERPNext Item"
+        },
+        {
+            "fieldname": "hierarchy_section",
+            "fieldtype": "Section Break",
+            "label": "Product Hierarchy"
+        },
+        {
+            "fieldname": "seed_crop",
+            "fieldtype": "Link",
+            "label": "Seed Crop",
+            "options": "Seed Crop",
+            "reqd": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "seed_segment",
+            "fieldtype": "Link",
+            "label": "Seed Segment",
+            "options": "Seed Segment",
+            "reqd": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "column_break_hierarchy",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "seed_subsegment",
+            "fieldtype": "Link",
+            "label": "Seed SubSegment",
+            "options": "Seed SubSegment"
+        },
+        {
+            "fieldname": "biological_traits_section",
+            "fieldtype": "Section Break",
+            "label": "Biological Traits",
+            "collapsible": 1
+        },
+        {
+            "fieldname": "resistances",
+            "fieldtype": "Small Text",
+            "label": "Resistances",
+            "description": "HR/IR disease resistance codes"
+        },
+        {
+            "fieldname": "vigor",
+            "fieldtype": "Select",
+            "label": "Vigor",
+            "options": "\nHigh\nMedium\nLow"
+        },
+        {
+            "fieldname": "column_break_traits",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "plant_habit",
+            "fieldtype": "Data",
+            "label": "Plant Habit"
+        },
+        {
+            "fieldname": "cultivation_environment",
+            "fieldtype": "Data",
+            "label": "Cultivation Environment",
+            "description": "e.g., Greenhouse, Open Field, Both"
+        },
+        {
+            "fieldname": "commercial_names_section",
+            "fieldtype": "Section Break",
+            "label": "Commercial Names"
+        },
+        {
+            "fieldname": "commercial_names",
+            "fieldtype": "Table",
+            "label": "Commercial Names by Country",
+            "options": "Variety Commercial Name"
+        },
+        {
+            "fieldname": "characteristics_section",
+            "fieldtype": "Section Break",
+            "label": "Characteristics",
+            "collapsible": 1
+        },
+        {
+            "fieldname": "plant_characteristics",
+            "fieldtype": "Text",
+            "label": "Plant Characteristics"
+        },
+        {
+            "fieldname": "fruit_characteristics",
+            "fieldtype": "Text",
+            "label": "Fruit Characteristics"
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Seed Geneticist",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Sales User",
+            "read": 1
+        }
+    ],
+    "sort_field": "variety_identifier",
+    "sort_order": "ASC",
+    "title_field": "variety_name",
+    "search_fields": "variety_name,variety_code,variety_identifier,seed_crop,seed_segment",
+    "show_title_field_in_link": 1,
+    "image_field": "",
+    "links": [
+        {
+            "link_doctype": "Item",
+            "link_fieldname": "linked_item"
+        }
+    ]
+}

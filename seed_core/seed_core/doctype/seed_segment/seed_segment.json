@@ -1,0 +1,62 @@
+{
+    "name": "Seed Segment",
+    "module": "Seed Core",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "naming_rule": "By fieldname",
+    "autoname": "field:segment_code",
+    "istable": 0,
+    "issingle": 0,
+    "is_submittable": 0,
+    "allow_import": 1,
+    "track_changes": 1,
+    "fields": [
+        {
+            "fieldname": "segment_name",
+            "fieldtype": "Data",
+            "label": "Segment Name",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "segment_code",
+            "fieldtype": "Data",
+            "label": "Segment Code",
+            "reqd": 1,
+            "unique": 1,
+            "in_list_view": 1,
+            "description": "Format: 'XX-YYY' (e.g., '01-004' for Indeterminate Cherry Tomato)"
+        },
+        {
+            "fieldname": "seed_crop",
+            "fieldtype": "Link",
+            "label": "Seed Crop",
+            "options": "Seed Crop",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        },
+        {
+            "role": "Seed Geneticist",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1
+        }
+    ],
+    "sort_field": "segment_code",
+    "sort_order": "ASC",
+    "title_field": "segment_name",
+    "search_fields": "segment_name,segment_code,seed_crop",
+    "show_title_field_in_link": 1
+}

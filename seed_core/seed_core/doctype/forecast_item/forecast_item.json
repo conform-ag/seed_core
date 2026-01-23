@@ -1,0 +1,61 @@
+{
+    "name": "Forecast Item",
+    "module": "Seed Core",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "istable": 1,
+    "issingle": 0,
+    "editable_grid": 1,
+    "track_changes": 0,
+    "fields": [
+        {
+            "fieldname": "seed_variety",
+            "fieldtype": "Link",
+            "label": "Seed Variety",
+            "options": "Seed Variety",
+            "in_list_view": 1,
+            "reqd": 1
+        },
+        {
+            "fieldname": "last_year_qty",
+            "fieldtype": "Float",
+            "label": "Last Year Qty",
+            "read_only": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "last_year_amount",
+            "fieldtype": "Currency",
+            "label": "Last Year Amount",
+            "read_only": 1
+        },
+        {
+            "fieldname": "suggested_qty",
+            "fieldtype": "Float",
+            "label": "Suggested Qty",
+            "in_list_view": 1,
+            "reqd": 1
+        },
+        {
+            "fieldname": "suggested_price",
+            "fieldtype": "Currency",
+            "label": "Suggested Price",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "expected_amount",
+            "fieldtype": "Currency",
+            "label": "Expected Amount",
+            "read_only": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "confidence_level",
+            "fieldtype": "Select",
+            "label": "Confidence",
+            "options": "\nHigh\nMedium\nLow",
+            "in_list_view": 1
+        }
+    ],
+    "permissions": []
+}

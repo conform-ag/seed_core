@@ -1,0 +1,69 @@
+{
+    "name": "Seed Core Settings",
+    "module": "Seed Core",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "issingle": 1,
+    "istable": 0,
+    "is_submittable": 0,
+    "track_changes": 1,
+    "fields": [
+        {
+            "fieldname": "general_section",
+            "fieldtype": "Section Break",
+            "label": "General Settings"
+        },
+        {
+            "fieldname": "naming_series_prefix",
+            "fieldtype": "Data",
+            "label": "Naming Series Prefix",
+            "default": "VAR-",
+            "description": "Default prefix for new Varieties"
+        },
+        {
+            "fieldname": "default_item_group",
+            "fieldtype": "Link",
+            "label": "Default Item Group",
+            "options": "Item Group",
+            "description": "Fallback Item Group if Crop is missing"
+        },
+        {
+            "fieldname": "column_break_general",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "default_stock_uom",
+            "fieldtype": "Link",
+            "label": "Default Stock UOM",
+            "options": "UOM",
+            "default": "Kg"
+        },
+        {
+            "fieldname": "quality_section",
+            "fieldtype": "Section Break",
+            "label": "Quality Settings"
+        },
+        {
+            "fieldname": "retest_interval_days",
+            "fieldtype": "Int",
+            "label": "Retest Interval (Days)",
+            "default": 180,
+            "description": "Default number of days before a batch needs re-testing"
+        },
+        {
+            "fieldname": "safety_stock_logic",
+            "fieldtype": "Select",
+            "label": "Expired Batch Handling",
+            "options": "Block\nWarning",
+            "default": "Warning",
+            "description": "Action when attempting to sell expired/retest-due batches"
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1
+        }
+    ]
+}

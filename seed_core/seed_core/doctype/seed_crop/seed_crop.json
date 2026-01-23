@@ -1,0 +1,59 @@
+{
+  "name": "Seed Crop",
+  "module": "Seed Core",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "naming_rule": "By fieldname",
+  "autoname": "field:crop_code",
+  "istable": 0,
+  "issingle": 0,
+  "is_submittable": 0,
+  "allow_import": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "crop_name",
+      "fieldtype": "Data",
+      "label": "Crop Name",
+      "reqd": 1,
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "crop_code",
+      "fieldtype": "Data",
+      "label": "Crop Code",
+      "reqd": 1,
+      "unique": 1,
+      "in_list_view": 1,
+      "description": "2-digit code (e.g., '01' for Tomato)"
+    },
+    {
+      "fieldname": "scientific_name",
+      "fieldtype": "Data",
+      "label": "Scientific Name",
+      "in_list_view": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    },
+    {
+      "role": "Seed Geneticist",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1
+    }
+  ],
+  "sort_field": "crop_code",
+  "sort_order": "ASC",
+  "title_field": "crop_name",
+  "search_fields": "crop_name,crop_code,scientific_name",
+  "show_title_field_in_link": 1
+}

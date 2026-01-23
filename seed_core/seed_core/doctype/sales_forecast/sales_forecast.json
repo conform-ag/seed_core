@@ -1,0 +1,122 @@
+{
+    "name": "Sales Forecast",
+    "module": "Seed Core",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "naming_rule": "Expression",
+    "autoname": "naming_series:",
+    "istable": 0,
+    "issingle": 0,
+    "is_submittable": 1,
+    "allow_import": 1,
+    "track_changes": 1,
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Series",
+            "options": "SF-.YYYY.-",
+            "default": "SF-.YYYY.-",
+            "reqd": 1
+        },
+        {
+            "fieldname": "fiscal_year",
+            "fieldtype": "Link",
+            "label": "Fiscal Year",
+            "options": "Fiscal Year",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "column_break_header",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "sales_person",
+            "fieldtype": "Link",
+            "label": "Sales Person",
+            "options": "Sales Person",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "customer",
+            "fieldtype": "Link",
+            "label": "Customer",
+            "options": "Customer",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "forecast_items_section",
+            "fieldtype": "Section Break",
+            "label": "Forecast Items"
+        },
+        {
+            "fieldname": "forecast_items",
+            "fieldtype": "Table",
+            "label": "Forecast Items",
+            "options": "Forecast Item",
+            "reqd": 1
+        },
+        {
+            "fieldname": "totals_section",
+            "fieldtype": "Section Break",
+            "label": "Totals"
+        },
+        {
+            "fieldname": "total_suggested_qty",
+            "fieldtype": "Float",
+            "label": "Total Suggested Qty",
+            "read_only": 1
+        },
+        {
+            "fieldname": "total_expected_amount",
+            "fieldtype": "Currency",
+            "label": "Total Expected Amount",
+            "read_only": 1
+        },
+        {
+            "fieldname": "notes_section",
+            "fieldtype": "Section Break",
+            "label": "Notes"
+        },
+        {
+            "fieldname": "notes",
+            "fieldtype": "Text",
+            "label": "Notes"
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Sales Forecast",
+            "print_hide": 1,
+            "read_only": 1
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1,
+            "submit": 1,
+            "cancel": 1
+        },
+        {
+            "role": "Sales User",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "submit": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC"
+}

@@ -1,0 +1,158 @@
+{
+    "name": "Sales Target Plan",
+    "module": "Seed Core",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "naming_rule": "Expression",
+    "autoname": "naming_series:",
+    "istable": 0,
+    "issingle": 0,
+    "is_submittable": 1,
+    "allow_import": 1,
+    "track_changes": 1,
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Series",
+            "options": "STP-.YYYY.-",
+            "default": "STP-.YYYY.-",
+            "reqd": 1
+        },
+        {
+            "fieldname": "fiscal_year",
+            "fieldtype": "Link",
+            "label": "Fiscal Year",
+            "options": "Fiscal Year",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "column_break_header",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "target_for",
+            "fieldtype": "Select",
+            "label": "Target For",
+            "options": "Company\nCustomer\nTerritory\nSales Person",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "target_entity",
+            "fieldtype": "Dynamic Link",
+            "label": "Target Entity",
+            "options": "target_for",
+            "reqd": 1,
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "currency",
+            "fieldtype": "Link",
+            "label": "Currency",
+            "options": "Currency",
+            "reqd": 1
+        },
+        {
+            "fieldname": "status_section",
+            "fieldtype": "Section Break",
+            "label": "Status"
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "label": "Status",
+            "options": "Draft\nInternal Proposal\nSubmitted to HQ\nHQ Approved\nRejected",
+            "default": "Draft",
+            "read_only": 1
+        },
+        {
+            "fieldname": "targets_section",
+            "fieldtype": "Section Break",
+            "label": "Target Items"
+        },
+        {
+            "fieldname": "target_items",
+            "fieldtype": "Table",
+            "label": "Target Items",
+            "options": "Target Item",
+            "reqd": 1
+        },
+        {
+            "fieldname": "totals_section",
+            "fieldtype": "Section Break",
+            "label": "Totals"
+        },
+        {
+            "fieldname": "total_target_qty",
+            "fieldtype": "Float",
+            "label": "Total Target Qty",
+            "read_only": 1
+        },
+        {
+            "fieldname": "total_target_amount",
+            "fieldtype": "Currency",
+            "label": "Total Target Amount",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_totals",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "total_actual_qty",
+            "fieldtype": "Float",
+            "label": "Total Actual Qty",
+            "read_only": 1
+        },
+        {
+            "fieldname": "total_actual_amount",
+            "fieldtype": "Currency",
+            "label": "Total Actual Amount",
+            "read_only": 1
+        },
+        {
+            "fieldname": "achievement_percent",
+            "fieldtype": "Percent",
+            "label": "Achievement %",
+            "read_only": 1
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Sales Target Plan",
+            "print_hide": 1,
+            "read_only": 1
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1,
+            "submit": 1,
+            "cancel": 1
+        },
+        {
+            "role": "Sales Planner",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "submit": 1,
+            "cancel": 1
+        },
+        {
+            "role": "Sales User",
+            "read": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC"
+}

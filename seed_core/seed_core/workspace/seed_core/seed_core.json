@@ -1,0 +1,125 @@
+{
+    "name": "Seed Core",
+    "module": "Seed Core",
+    "doctype": "Workspace",
+    "public": 1,
+    "title": "Seed Core",
+    "icon": "seed",
+    "category": "Modules",
+    "for_user": "",
+    "parent_page": "",
+    "content": "[{\"id\":\"gysOZOC28c\",\"type\":\"header\",\"data\":{\"text\":\"Seed Core\",\"col\":12}},{\"id\":\"k3l89ijGHL\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Seed Variety\",\"col\":4}},{\"id\":\"m5k29ljPQR\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Seed Crop\",\"col\":4}},{\"id\":\"n7m39npTUV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Seed Processing\",\"col\":4}},{\"id\":\"o9o49qrXYZ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Target Plan\",\"col\":4}},{\"id\":\"p1q59stABC\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Forecast\",\"col\":4}},{\"id\":\"q3s69uvDEF\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Seed Core Settings\",\"col\":4}}]",
+    "shortcuts": [
+        {
+            "label": "Seed Variety",
+            "link_to": "Seed Variety",
+            "type": "DocType",
+            "color": "Green"
+        },
+        {
+            "label": "Seed Crop",
+            "link_to": "Seed Crop",
+            "type": "DocType",
+            "color": "Blue"
+        },
+        {
+            "label": "Seed Segment",
+            "link_to": "Seed Segment",
+            "type": "DocType"
+        },
+        {
+            "label": "Seed SubSegment",
+            "link_to": "Seed SubSegment",
+            "type": "DocType"
+        },
+        {
+            "label": "Seed Processing",
+            "link_to": "Seed Processing",
+            "type": "DocType",
+            "color": "Orange"
+        },
+        {
+            "label": "Sales Target Plan",
+            "link_to": "Sales Target Plan",
+            "type": "DocType",
+            "color": "Purple"
+        },
+        {
+            "label": "Sales Forecast",
+            "link_to": "Sales Forecast",
+            "type": "DocType"
+        },
+        {
+            "label": "Seed Core Settings",
+            "link_to": "Seed Core Settings",
+            "type": "DocType",
+            "color": "Grey"
+        }
+    ],
+    "links": [
+        {
+            "label": "Master Data",
+            "type": "Card Break"
+        },
+        {
+            "label": "Seed Crop",
+            "link_to": "Seed Crop",
+            "link_type": "DocType",
+            "type": "Link"
+        },
+        {
+            "label": "Seed Segment",
+            "link_to": "Seed Segment",
+            "link_type": "DocType",
+            "type": "Link"
+        },
+        {
+            "label": "Seed SubSegment",
+            "link_to": "Seed SubSegment",
+            "link_type": "DocType",
+            "type": "Link"
+        },
+        {
+            "label": "Seed Variety",
+            "link_to": "Seed Variety",
+            "link_type": "DocType",
+            "type": "Link"
+        },
+        {
+            "label": "Operations",
+            "type": "Card Break"
+        },
+        {
+            "label": "Seed Processing",
+            "link_to": "Seed Processing",
+            "link_type": "DocType",
+            "type": "Link"
+        },
+        {
+            "label": "Sales Planning",
+            "type": "Card Break"
+        },
+        {
+            "label": "Sales Target Plan",
+            "link_to": "Sales Target Plan",
+            "link_type": "DocType",
+            "type": "Link"
+        },
+        {
+            "label": "Sales Forecast",
+            "link_to": "Sales Forecast",
+            "link_type": "DocType",
+            "type": "Link"
+        },
+        {
+            "label": "Settings",
+            "type": "Card Break"
+        },
+        {
+            "label": "Seed Core Settings",
+            "link_to": "Seed Core Settings",
+            "link_type": "DocType",
+            "type": "Link"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Regional Variety Performance",
+    "doctype": "Report",
+    "report_name": "Regional Variety Performance",
+    "ref_doctype": "Sales Invoice",
+    "report_type": "Script Report",
+    "is_standard": "Yes",
+    "module": "Seed Core",
+    "add_total_row": 1,
+    "disabled": 0
+}

@@ -1,0 +1,40 @@
+{
+    "name": "Variety Commercial Name",
+    "module": "Seed Core",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "istable": 1,
+    "issingle": 0,
+    "editable_grid": 1,
+    "track_changes": 0,
+    "fields": [
+        {
+            "fieldname": "country",
+            "fieldtype": "Link",
+            "label": "Country",
+            "options": "Country",
+            "in_list_view": 1,
+            "reqd": 1
+        },
+        {
+            "fieldname": "commercial_name",
+            "fieldtype": "Data",
+            "label": "Commercial Name",
+            "in_list_view": 1,
+            "reqd": 1
+        },
+        {
+            "fieldname": "registration_status",
+            "fieldtype": "Select",
+            "label": "Registration Status",
+            "options": "\nPending\nRegistered\nExpired",
+            "in_list_view": 1
+        },
+        {
+            "fieldname": "registration_number",
+            "fieldtype": "Data",
+            "label": "Registration Number"
+        }
+    ],
+    "permissions": []
+}

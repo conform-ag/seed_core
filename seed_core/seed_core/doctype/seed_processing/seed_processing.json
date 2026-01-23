@@ -1,0 +1,190 @@
+{
+    "name": "Seed Processing",
+    "module": "Seed Core",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "naming_rule": "Expression",
+    "autoname": "naming_series:",
+    "istable": 0,
+    "issingle": 0,
+    "is_submittable": 1,
+    "allow_import": 1,
+    "track_changes": 1,
+    "fields": [
+        {
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "label": "Series",
+            "options": "SP-.YYYY.-",
+            "default": "SP-.YYYY.-",
+            "reqd": 1
+        },
+        {
+            "fieldname": "operation_type",
+            "fieldtype": "Select",
+            "label": "Operation Type",
+            "options": "Cleaning\nGrading\nPriming\nPelleting\nChemical Treatment\nPackaging",
+            "reqd": 1,
+            "in_list_view": 1,
+            "in_standard_filter": 1
+        },
+        {
+            "fieldname": "posting_date",
+            "fieldtype": "Date",
+            "label": "Posting Date",
+            "default": "Today",
+            "reqd": 1
+        },
+        {
+            "fieldname": "column_break_header",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "company",
+            "fieldtype": "Link",
+            "label": "Company",
+            "options": "Company",
+            "reqd": 1
+        },
+        {
+            "fieldname": "warehouse",
+            "fieldtype": "Link",
+            "label": "Warehouse",
+            "options": "Warehouse",
+            "reqd": 1,
+            "description": "Processing location"
+        },
+        {
+            "fieldname": "input_section",
+            "fieldtype": "Section Break",
+            "label": "Input Material"
+        },
+        {
+            "fieldname": "input_item",
+            "fieldtype": "Link",
+            "label": "Input Item",
+            "options": "Item",
+            "reqd": 1
+        },
+        {
+            "fieldname": "input_batch",
+            "fieldtype": "Link",
+            "label": "Input Batch",
+            "options": "Batch",
+            "reqd": 1,
+            "get_query": "seed_core.seed_core.doctype.seed_processing.seed_processing.get_batch_query"
+        },
+        {
+            "fieldname": "input_qty",
+            "fieldtype": "Float",
+            "label": "Input Qty",
+            "reqd": 1
+        },
+        {
+            "fieldname": "input_batch_details",
+            "fieldtype": "HTML",
+            "label": "Batch Details",
+            "options": "<div id='batch-details'></div>"
+        },
+        {
+            "fieldname": "output_section",
+            "fieldtype": "Section Break",
+            "label": "Output Material"
+        },
+        {
+            "fieldname": "output_item",
+            "fieldtype": "Link",
+            "label": "Output Item",
+            "options": "Item",
+            "description": "Leave blank to use same as input"
+        },
+        {
+            "fieldname": "output_batch",
+            "fieldtype": "Link",
+            "label": "Output Batch",
+            "options": "Batch",
+            "description": "Leave blank to auto-generate"
+        },
+        {
+            "fieldname": "auto_create_batch",
+            "fieldtype": "Check",
+            "label": "Auto Create Output Batch",
+            "default": 1
+        },
+        {
+            "fieldname": "column_break_output",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "output_qty",
+            "fieldtype": "Float",
+            "label": "Output Qty",
+            "reqd": 1
+        },
+        {
+            "fieldname": "waste_qty",
+            "fieldtype": "Float",
+            "label": "Waste Qty",
+            "description": "Calculated or manual entry"
+        },
+        {
+            "fieldname": "loss_percent",
+            "fieldtype": "Percent",
+            "label": "Loss %",
+            "read_only": 1
+        },
+        {
+            "fieldname": "stock_entry_section",
+            "fieldtype": "Section Break",
+            "label": "Stock Entry",
+            "collapsible": 1
+        },
+        {
+            "fieldname": "stock_entry",
+            "fieldtype": "Link",
+            "label": "Stock Entry",
+            "options": "Stock Entry",
+            "read_only": 1
+        },
+        {
+            "fieldname": "notes_section",
+            "fieldtype": "Section Break",
+            "label": "Notes"
+        },
+        {
+            "fieldname": "notes",
+            "fieldtype": "Text",
+            "label": "Processing Notes"
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Seed Processing",
+            "print_hide": 1,
+            "read_only": 1
+        }
+    ],
+    "permissions": [
+        {
+            "role": "System Manager",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "delete": 1,
+            "submit": 1,
+            "cancel": 1
+        },
+        {
+            "role": "Seed Processing Officer",
+            "read": 1,
+            "write": 1,
+            "create": 1,
+            "submit": 1,
+            "cancel": 1
+        }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC"
+}

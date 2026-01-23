@@ -1,0 +1,26 @@
+[
+    {
+        "doctype": "Role",
+        "role_name": "Seed Geneticist",
+        "desk_access": 1,
+        "is_custom": 1
+    },
+    {
+        "doctype": "Role",
+        "role_name": "Lab Technician",
+        "desk_access": 1,
+        "is_custom": 1
+    },
+    {
+        "doctype": "Role",
+        "role_name": "Seed Processing Officer",
+        "desk_access": 1,
+        "is_custom": 1
+    },
+    {
+        "doctype": "Role",
+        "role_name": "Sales Planner",
+        "desk_access": 1,
+        "is_custom": 1
+    }
+]
