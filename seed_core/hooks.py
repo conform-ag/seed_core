@@ -13,9 +13,128 @@ required_apps = ["erpnext"]
 # Fixtures - exported automatically on bench export-fixtures
 fixtures = [
 	{"dt": "Role", "filters": [["role_name", "in", ["Seed Geneticist", "Lab Technician", "Seed Processing Officer", "Sales Planner"]]]},
-	{"dt": "Custom Field", "filters": [["dt", "=", "Batch"]]},
 	{"dt": "Workspace", "filters": [["module", "=", "Seed Core"]]}
 ]
+
+# Custom Fields
+custom_fields = {
+	"Batch": [
+		{
+			"fieldname": "seed_quality_section",
+			"fieldtype": "Section Break",
+			"label": "Seed Quality",
+			"insert_after": "manufacturing_date"
+		},
+		{
+			"fieldname": "germination_percent",
+			"fieldtype": "Float",
+			"label": "Germination %",
+			"precision": "2",
+			"insert_after": "seed_quality_section",
+			"in_list_view": 1
+		},
+		{
+			"fieldname": "purity_percent",
+			"fieldtype": "Float",
+			"label": "Purity %",
+			"precision": "2",
+			"insert_after": "germination_percent"
+		},
+		{
+			"fieldname": "moisture_percent",
+			"fieldtype": "Float",
+			"label": "Moisture %",
+			"insert_after": "purity_percent"
+		},
+		{
+			"fieldname": "seed_vigor",
+			"fieldtype": "Select",
+			"label": "Vigor",
+			"options": "\nHigh\nMedium\nLow",
+			"insert_after": "moisture_percent"
+		},
+		{
+			"fieldname": "quality_column_break",
+			"fieldtype": "Column Break",
+			"insert_after": "seed_vigor"
+		},
+		{
+			"fieldname": "lab_test_date",
+			"fieldtype": "Date",
+			"label": "Lab Test Date",
+			"insert_after": "quality_column_break"
+		},
+		{
+			"fieldname": "next_retest_date",
+			"fieldtype": "Date",
+			"label": "Next Retest Date",
+			"read_only": 1,
+			"insert_after": "lab_test_date",
+			"description": "Calculated based on Seed Core Settings"
+		},
+		{
+			"fieldname": "seed_treatments_section",
+			"fieldtype": "Section Break",
+			"label": "Seed Treatments",
+			"insert_after": "next_retest_date"
+		},
+		{
+			"fieldname": "is_pelleted",
+			"fieldtype": "Check",
+			"label": "Is Pelleted",
+			"insert_after": "seed_treatments_section"
+		},
+		{
+			"fieldname": "is_primed",
+			"fieldtype": "Check",
+			"label": "Is Primed",
+			"insert_after": "is_pelleted"
+		},
+		{
+			"fieldname": "is_coated",
+			"fieldtype": "Check",
+			"label": "Is Coated",
+			"insert_after": "is_primed"
+		},
+		{
+			"fieldname": "is_chemically_treated",
+			"fieldtype": "Check",
+			"label": "Is Chemically Treated",
+			"insert_after": "is_coated"
+		},
+		{
+			"fieldname": "treatments_column_break",
+			"fieldtype": "Column Break",
+			"insert_after": "is_chemically_treated"
+		},
+		{
+			"fieldname": "treatment_name",
+			"fieldtype": "Data",
+			"label": "Treatment Name",
+			"insert_after": "treatments_column_break",
+			"description": "e.g., Thiram + Apron"
+		},
+		{
+			"fieldname": "seed_certifications_section",
+			"fieldtype": "Section Break",
+			"label": "Seed Certifications",
+			"insert_after": "treatment_name"
+		},
+		{
+			"fieldname": "is_organic",
+			"fieldtype": "Check",
+			"label": "Is Organic",
+			"insert_after": "seed_certifications_section"
+		},
+		{
+			"fieldname": "is_gspp",
+			"fieldtype": "Check",
+			"label": "Is GSPP",
+			"insert_after": "is_organic",
+			"description": "Good Seed and Plant Practices certified"
+		}
+	]
+}
 
 
 # Each item in the list will be shown as an app in the apps page
