@@ -179,10 +179,5 @@
     "search_fields": "variety_name,variety_code,variety_identifier,seed_crop,seed_segment",
     "show_title_field_in_link": 1,
     "image_field": "",
-    "links": [
-        {
-            "link_doctype": "Item",
-            "link_fieldname": "linked_item"
-        }
-    ]
+    "links": []
 }
