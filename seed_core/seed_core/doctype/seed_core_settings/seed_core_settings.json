@@ -35,8 +35,7 @@
             "fieldname": "default_stock_uom",
             "fieldtype": "Link",
             "label": "Default Stock UOM",
-            "options": "UOM",
-            "default": "Kg"
+            "options": "UOM"
         },
         {
             "fieldname": "quality_section",

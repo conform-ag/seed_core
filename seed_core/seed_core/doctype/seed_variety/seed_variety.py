@@ -102,7 +102,7 @@ class SeedVariety(Document):
 			item.item_name = self.variety_name
 			item.item_group = crop_name
 
-			item.stock_uom = settings.default_uom if settings and settings.default_uom else "Kg"
+			item.stock_uom = settings.default_stock_uom if settings and settings.default_stock_uom else "Kg"
 			item.is_stock_item = 1
 			item.has_batch_no = 1
 			item.create_new_batch = 1
