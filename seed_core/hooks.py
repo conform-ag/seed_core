@@ -161,6 +161,43 @@ custom_fields = {
             "label": "Customer Grade",
             "options": "\nClass A\nClass B\nClass C",
             "insert_after": "influence_level"
+        },
+        {
+            "fieldname": "is_cooperative",
+            "fieldtype": "Check",
+            "label": "Is Cooperative",
+            "insert_after": "customer_grade"
+        }
+    ],
+    "Sales Invoice": [
+        {
+            "fieldname": "cooperative_member",
+            "fieldtype": "Link",
+            "label": "Cooperative Member",
+            "options": "Cooperative Member",
+            "insert_after": "customer",
+            "depends_on": "eval:frappe.db.get_value('Customer', doc.customer, 'is_cooperative') == 1" 
+             # Note: depends_on in Custom Field might not work perfectly with DB calls in JS eval without async, 
+             # better to handle visibility via JS or simple depends_on if field mapped. 
+             # We will handle filtering in JS.
+        }
+    ],
+    "Sales Order": [
+        {
+            "fieldname": "cooperative_member",
+            "fieldtype": "Link",
+            "label": "Cooperative Member",
+            "options": "Cooperative Member",
+            "insert_after": "customer"
+        }
+    ],
+    "Delivery Note": [
+        {
+            "fieldname": "cooperative_member",
+            "fieldtype": "Link",
+            "label": "Cooperative Member",
+            "options": "Cooperative Member",
+            "insert_after": "customer"
         }
     ]
 }
@@ -199,7 +236,12 @@ custom_fields = {
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+# include js in doctype views
+doctype_js = {
+    "Sales Invoice": "public/js/cooperative_transaction.js",
+    "Sales Order": "public/js/cooperative_transaction.js",
+    "Delivery Note": "public/js/cooperative_transaction.js"
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}

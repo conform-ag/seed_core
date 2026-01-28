@@ -45,12 +45,7 @@ class SeedVariety(Document):
 		if self.default_commercial_name:
 			self.variety_name = self.default_commercial_name
 
-	@frappe.whitelist()
-	def update_condensed_names(self):
-		"""Update variety name based on default commercial name for this doc."""
-		self.set_default_commercial_name()
-		self.save()
-		return self.variety_name
+
 
 	@frappe.whitelist()
 	def sync_to_item(self):
@@ -58,18 +53,7 @@ class SeedVariety(Document):
 		self.create_or_update_linked_item()
 		frappe.msgprint(_("Synced to Item {0}").format(self.linked_item))
 
-@frappe.whitelist()
-def sync_selected_to_items(names):
-	"""Sync selected varieties to Items."""
-	if isinstance(names, str):
-		import json
-		names = json.loads(names)
-	
-	for name in names:
-		doc = frappe.get_doc("Seed Variety", name)
-		doc.create_or_update_linked_item()
-	
-	frappe.msgprint(_("Synced {0} varieties to Items").format(len(names)))
+
 
 	def generate_variety_identifier(self):
 		"""Generate unique variety identifier from hierarchy."""
@@ -117,7 +101,8 @@ def sync_selected_to_items(names):
 			item.item_code = self.variety_identifier
 			item.item_name = self.variety_name
 			item.item_group = crop_name
-			item.stock_uom = "Kg"
+
+			item.stock_uom = settings.default_uom if settings and settings.default_uom else "Kg"
 			item.is_stock_item = 1
 			item.has_batch_no = 1
 			item.create_new_batch = 1
@@ -155,3 +140,30 @@ def sync_selected_to_items(names):
 		"""Manual trigger to sync variety to Item."""
 		self.create_or_update_linked_item()
 		frappe.msgprint(_("Synced to Item {0}").format(self.linked_item))
+
+@frappe.whitelist()
+def sync_selected_to_items(names):
+	"Sync selected varieties to Items."
+	if isinstance(names, str):
+		import json
+		names = json.loads(names)
+	
+	for name in names:
+		doc = frappe.get_doc('Seed Variety', name)
+		doc.create_or_update_linked_item()
+	
+	frappe.msgprint(_('Synced {0} varieties to Items').format(len(names)))
+
+@frappe.whitelist()
+def update_condensed_names():
+	"""Update all variety names based on default commercial name."""
+	varieties = frappe.get_all("Seed Variety", pluck="name")
+	count = 0
+	for name in varieties:
+		doc = frappe.get_doc("Seed Variety", name)
+		doc.set_default_commercial_name()
+		if doc.has_changed(): # Optimistic check if supported, or just save
+			doc.save()
+			count += 1
+	
+	frappe.msgprint(_("Updated names for {0} varieties").format(count))
