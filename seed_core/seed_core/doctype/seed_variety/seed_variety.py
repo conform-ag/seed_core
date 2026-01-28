@@ -16,10 +16,60 @@ class SeedVariety(Document):
 		"""Create linked ERPNext Item after variety is created."""
 		self.create_or_update_linked_item()
 
+	def validate(self):
+		"""Validate default commercial name."""
+		self.set_default_commercial_name()
+
 	def on_update(self):
 		"""Sync changes to linked ERPNext Item."""
 		if self.linked_item:
 			self.create_or_update_linked_item()
+
+	def set_default_commercial_name(self):
+		"""Set default commercial name and update variety name if applicable."""
+		default_name = None
+		default_count = 0
+		
+		if self.commercial_names:
+			for row in self.commercial_names:
+				if row.is_default:
+					default_name = row.commercial_name
+					default_count += 1
+			
+			if default_count > 1:
+				frappe.throw(_("Only one Commercial Name can be set as default."))
+				
+		self.default_commercial_name = default_name
+		
+		# If default is set, update variety_name
+		if self.default_commercial_name:
+			self.variety_name = self.default_commercial_name
+
+	@frappe.whitelist()
+	def update_condensed_names(self):
+		"""Update variety name based on default commercial name for this doc."""
+		self.set_default_commercial_name()
+		self.save()
+		return self.variety_name
+
+	@frappe.whitelist()
+	def sync_to_item(self):
+		"""Manual trigger to sync variety to Item."""
+		self.create_or_update_linked_item()
+		frappe.msgprint(_("Synced to Item {0}").format(self.linked_item))
+
+@frappe.whitelist()
+def sync_selected_to_items(names):
+	"""Sync selected varieties to Items."""
+	if isinstance(names, str):
+		import json
+		names = json.loads(names)
+	
+	for name in names:
+		doc = frappe.get_doc("Seed Variety", name)
+		doc.create_or_update_linked_item()
+	
+	frappe.msgprint(_("Synced {0} varieties to Items").format(len(names)))
 
 	def generate_variety_identifier(self):
 		"""Generate unique variety identifier from hierarchy."""

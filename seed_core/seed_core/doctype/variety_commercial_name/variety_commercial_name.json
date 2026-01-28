@@ -31,6 +31,13 @@
             "in_list_view": 1
         },
         {
+            "fieldname": "is_default",
+            "fieldtype": "Check",
+            "label": "Is Default",
+            "in_list_view": 1,
+            "columns": 2
+        },
+        {
             "fieldname": "registration_number",
             "fieldtype": "Data",
             "label": "Registration Number"

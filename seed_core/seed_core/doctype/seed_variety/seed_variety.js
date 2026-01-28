@@ -46,4 +46,39 @@ frappe.ui.form.on("Seed Variety", {
             }, __("Actions"));
         }
     }
+    }
+});
+
+frappe.ui.form.on("Variety Commercial Name", {
+    is_default: function (frm, cdt, cdn) {
+        var row = locals[cdt][cdn];
+        if (row.is_default) {
+            // Uncheck other rows
+            frm.doc.commercial_names.forEach(function (d) {
+                if (d.name !== row.name) {
+                    frappe.model.set_value(d.doctype, d.name, "is_default", 0);
+                }
+            });
+            // Update default commercial name field
+            frm.set_value("default_commercial_name", row.commercial_name);
+        } else {
+             // If unchecked, and it was the value in default field, ignore clear for now, 
+             // let serve side handle or user pick another. 
+             // Actually, if unchecking the only default, clear the field.
+             if (frm.doc.default_commercial_name === row.commercial_name) {
+                 frm.set_value("default_commercial_name", "");
+             }
+        }
+    },
+    commercial_names_remove: function(frm) {
+        // Recalculate default if row removed
+        let found = false;
+        frm.doc.commercial_names.forEach(function(d) {
+            if(d.is_default) {
+                frm.set_value("default_commercial_name", d.commercial_name);
+                found = true;
+            }
+        });
+        if(!found) frm.set_value("default_commercial_name", "");
+    }
 });

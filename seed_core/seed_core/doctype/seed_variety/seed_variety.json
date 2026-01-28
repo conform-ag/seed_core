@@ -152,6 +152,17 @@
             "fieldtype": "Text",
             "label": "Fruit Characteristics"
         }
+        {
+            "fieldname": "default_commercial_name",
+            "fieldtype": "Data",
+            "label": "Default Commercial Name",
+            "read_only": 1
+        },
+        {
+            "fieldname": "image",
+            "fieldtype": "Attach Image",
+            "label": "Image"
+        }
     ],
     "permissions": [
         {
@@ -176,8 +187,8 @@
     "sort_field": "variety_identifier",
     "sort_order": "ASC",
     "title_field": "variety_name",
-    "search_fields": "variety_name,variety_code,variety_identifier,seed_crop,seed_segment",
+    "search_fields": "variety_name,variety_code,variety_identifier,seed_crop,seed_segment,default_commercial_name",
     "show_title_field_in_link": 1,
-    "image_field": "",
+    "image_field": "image",
     "links": []
 }
