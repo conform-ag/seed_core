@@ -133,7 +133,36 @@ custom_fields = {
 			"insert_after": "is_organic",
 			"description": "Good Seed and Plant Practices certified"
 		}
-	]
+    ],
+    "Customer": [
+        {
+            "fieldname": "sales_agent_code",
+            "fieldtype": "Data",
+            "label": "Sales Agent Code",
+            "insert_after": "customer_name"
+        },
+        {
+            "fieldname": "farming_type",
+            "fieldtype": "Select",
+            "label": "Farming Type",
+            "options": "\nMonocrop\nMulticrop",
+            "insert_after": "sales_agent_code"
+        },
+        {
+            "fieldname": "influence_level",
+            "fieldtype": "Select",
+            "label": "Influence Level",
+            "options": "\nHigh\nMedium\nLow",
+            "insert_after": "farming_type"
+        },
+        {
+            "fieldname": "customer_grade",
+            "fieldtype": "Select",
+            "label": "Customer Grade",
+            "options": "\nClass A\nClass B\nClass C",
+            "insert_after": "influence_level"
+        }
+    ]
 }
 
 
