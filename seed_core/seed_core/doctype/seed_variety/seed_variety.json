@@ -151,7 +151,7 @@
             "fieldname": "fruit_characteristics",
             "fieldtype": "Text",
             "label": "Fruit Characteristics"
-        }
+        },
         {
             "fieldname": "default_commercial_name",
             "fieldtype": "Data",
